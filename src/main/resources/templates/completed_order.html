@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>지난수주</title>
+    <!-- 공통 cdn.css 포함 -->
+    <th:block th:replace="header :: head"></th:block>
+    <link rel="stylesheet" href="/css/completed_order.css">
+</head>
+<body>
+<!-- 공통 헤더 포함 -->
+<header th:replace="header :: header"></header>
+<h1>지난수주</h1>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-end mb-3">
+        <button class="btn btn-primary me-2">엑셀로 등록</button>
+        <button class="btn btn-secondary" id="openRegistrationPopup">수주 등록</button>
+    </div>
+    <div>
+        <table id="myTable" class="display">
+            <thead>
+            <tr>
+                <th>수주번호</th>
+                <th>제품명</th>
+                <th>총수량</th>
+                <th>주문일자</th>
+                <th>출하일자</th>
+                <th>고객사</th>
+                <th>배송지</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 팝업 시작 -->
+<div id="registrationPopup" class="popup">
+    <div class="content">
+        <p style="font-size: 16px; font-weight: 700; margin-bottom: 20px;">수주 등록</p>
+        <div style="margin-bottom: 10px;">
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid black; text-align: center;">
+                <thead>
+                <tr>
+                    <th style="border: 1px solid black; padding: 8px;">양배추즙</th>
+                    <th style="border: 1px solid black; padding: 8px;">흑마늘즙</th>
+                    <th style="border: 1px solid black; padding: 8px;">석류젤리</th>
+                    <th style="border: 1px solid black; padding: 8px;">매실젤리</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td style="border: 1px solid black; padding: 8px;">1box</td>
+                    <td style="border: 1px solid black; padding: 8px;">1box</td>
+                    <td style="border: 1px solid black; padding: 8px;">1box</td>
+                    <td style="border: 1px solid black; padding: 8px;">1box</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label style="display: inline-block; width: 100px;">제품명 :</label>
+            <select style="padding: 5px; border: 1px solid #ccc;">
+                <option value="1">양배추즙</option>
+                <option value="2">흑마늘즙</option>
+                <option value="3">석류젤리</option>
+                <option value="4">매실젤리</option>
+            </select>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label style="display: inline-block; width: 100px;">주문수량 :</label><input type="text" style="padding: 5px; border: 1px solid #ccc;">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label style="display: inline-block; width: 100px;">재고사용 :</label><input type="text" style="padding: 5px; border: 1px solid #ccc;">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label style="display: inline-block; width: 100px;">제작수량 :</label><input type="text" style="padding: 5px; border: 1px solid #ccc;">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label style="display: inline-block; width: 100px;">예상출하날짜 :</label><input type="text" style="padding: 5px; border: 0 solid #ccc;" disabled>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label style="display: inline-block; width: 100px;">고객사 :</label><input type="text" style="padding: 5px; border: 1px solid #ccc;">
+        </div>
+        <div style="margin-bottom: 20px;">
+            <label style="display: inline-block; width: 100px;">배송지 :</label><input type="text" style="padding: 5px; border: 1px solid #ccc;">
+        </div>
+        <div class="popupbtnarea">
+            <button id="openConfirmationPopup" class="closepopupbtn btn-primary">수주등록</button>
+            <button class="closepopupbtn btn-danger" onclick="closePopup('registrationPopup')">취소</button>
+        </div>
+    </div>
+</div>
+
+<!-- 확인 팝업 -->
+<div id="confirmationPopup" class="popup">
+    <div class="content">
+        <p style="font-size: 16px; font-weight: 700; margin-bottom: 20px;">수주 확인</p>
+        <div style="margin-bottom: 10px;">
+            <label style="display: inline-block; width: 100px;">제품명 :</label><input type="text" style="padding: 5px; border: 1px solid #ccc;" disabled>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label style="display: inline-block; width: 100px;">주문수량 :</label><input type="text" style="padding: 5px; border: 1px solid #ccc;" disabled>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label style="display: inline-block; width: 100px;">재고사용 :</label><input type="text" style="padding: 5px; border: 1px solid #ccc;" disabled>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label style="display: inline-block; width: 100px;">제작수량 :</label><input type="text" style="padding: 5px; border: 1px solid #ccc;" disabled>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label style="display: inline-block; width: 100px;">예상출하날짜 :</label><input type="text" style="padding: 5px; border: 0 solid #ccc;" disabled>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label style="display: inline-block; width: 100px;">고객사 :</label><input type="text" style="padding: 5px; border: 1px solid #ccc;" disabled>
+        </div>
+        <div style="margin-bottom: 20px;">
+            <label style="display: inline-block; width: 100px;">배송지 :</label><input type="text" style="padding: 5px; border: 1px solid #ccc;" disabled>
+        </div>
+        <div class="popupbtnarea">
+            <button id="confirm" class="closepopupbtn btn-primary" >확인</button>
+            <button class="closepopupbtn btn-danger" onclick="closePopup('confirmationPopup')">취소</button>
+        </div>
+    </div>
+</div>
+<!-- 팝업 끝 -->
+
+<!-- 공통 cdn.js 포함 -->
+<th:block th:replace="header :: footer"></th:block>
+<script src="/js/completed_order.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>원자재 내역</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link href="https://cdn.datatables.net/v/dt/dt-2.0.8/datatables.min.css" rel="stylesheet">
+    <style>
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* 모든 테이블에 테두리 설정 */
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #000;
+        }
+
+        .small-table th,
+        .small-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .small-table th {
+            background-color: #f2f2f2;
+        }
+
+        .small-table {
+            width: auto;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        /* 작은 표를 오른쪽 상단에 배치 */
+        .small-table-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 공통 헤더 포함 -->
+<header th:replace="header :: header"></header>
+
+<div class="container">
+    <!-- 제목을 포함하는 그리드 -->
+    <div class="row">
+        <div class="col">
+            <h1 class="text-center mt-5 mb-4">원자재 내역</h1>
+        </div>
+    </div>
+
+    <!-- 작은 표를 포함하는 그리드 -->
+    <div class="row small-table-container">
+        <div class="col-auto">
+            <table class="small-table">
+                <thead>
+                <tr>
+                    <th scope="col">포장지</th>
+                    <th scope="col">박스</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>20ea</td>
+                    <td>100ea</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 원자재 내역 테이블 -->
+    <div class="row">
+        <div class="col">
+            <table id="materialTable" class="table table-bordered display" style="width:100%">
+                <thead>
+                <tr>
+                    <th>수주 번호</th>
+                    <th>발주 번호</th>
+                    <th>원자재</th>
+                    <th>입고량</th>
+                    <th>입고 날짜</th>
+                    <th>출고량</th>
+                    <th>출고 날짜</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>5</td>
+                    <td>10</td>
+                    <td>꿀</td>
+                    <td>45L</td>
+                    <td>2024-05-59</td>
+                    <td>45L</td>
+                    <td>2024-05-59</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>10</td>
+                    <td>꿀</td>
+                    <td>45L</td>
+                    <td>2024-05-59</td>
+                    <td>45L</td>
+                    <td>2024-05-59</td>
+                </tr>                <tr>
+                    <td>5</td>
+                    <td>10</td>
+                    <td>꿀</td>
+                    <td>45L</td>
+                    <td>2024-05-59</td>
+                    <td>45L</td>
+                    <td>2024-05-59</td>
+                </tr>
+                <!-- 다른 행들도 필요에 따라 추가 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+<script>
+    $(document).ready(function() {
+        var table = $('#materialTable').DataTable({
+            paging: false,
+            lengthChange: false,
+            searching: false,
+            select: false,
+            info: false
+        });
+    });
+</script>
+</body>
+
+</html>
