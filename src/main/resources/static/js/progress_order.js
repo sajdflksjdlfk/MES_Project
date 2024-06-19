@@ -132,7 +132,7 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 // 서버로부터의 오류 메시지를 표시
-                alert('Error occurred during order POST: ' + xhr.responseText);
+                alert('수주를 등록할 수 없습니다: ' + xhr.responseText);
                 closePopup("registrationPopup");
                 closePopup("confirmationPopup");
             }
