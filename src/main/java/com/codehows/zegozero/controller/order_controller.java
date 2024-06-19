@@ -50,4 +50,9 @@ public class order_controller {
     public String shipment_management(){
         return "shipment_management";
     }
+
+    @GetMapping("/example")
+    public String example(){
+        return "example";
+    }
 }

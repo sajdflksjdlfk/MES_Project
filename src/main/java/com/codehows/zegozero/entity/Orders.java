@@ -25,6 +25,8 @@ public class Orders {
 
     private int used_inventory;
 
+    private int production_quantity;
+
     private Date order_date;
 
     private Date expected_shipping_date;
