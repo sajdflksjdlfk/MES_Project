@@ -1,3 +1,5 @@
+let currentMonth = new Date().getMonth(); // 현재 월로 초기화 (0부터 시작)
+
 <!-- dataTable 초기화/설정 -->
     $(document).ready( function () {
     $('#myTable1').DataTable({
@@ -25,7 +27,10 @@
     'margin': '0',
     'padding': '3px'
 });
-} );
+
+        // 페이지 로드 시 차트 초기화
+        initializeCharts();
+});
 
     // 새로고침 버튼 클릭 시 DataTable1 다시 로드
     function refreshTable1() {
@@ -62,7 +67,11 @@
 
     <!-- 일일 생산량 데이터 가져오는 부분 -->
     document.getElementById('dailyButton').addEventListener('click', function() {
-    fetch('/api/dailyProduction')
+        // 이전, 다음 버튼 나타내기
+        document.getElementById('prevPageButton').style.display = 'block';
+        document.getElementById('nextPageButton').style.display = 'block';
+
+    fetch(`/api/dailyProduction?month=${currentMonth}`)
         .then(response => response.json())
         .then(data => {
             const labels = data.map(item => formatDate(item.received_date));  // 날짜 데이터 변환
@@ -72,17 +81,16 @@
             myChart1.data.datasets[0].backgroundColor = 'rgba(54, 162, 235, 0.2)';
             myChart1.data.datasets[0].borderColor = 'rgba(54, 162, 235, 1)';
             myChart1.update();
-
         })
+        .catch(error => console.error('Error fetching daily production data:', error));
 });
 
-    function formatDate(dateString) {
-    const date = new Date(dateString);
-    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-}
+// 월간 생산량 데이터 가져오는 부분
+document.getElementById('monthlyButton').addEventListener('click', function() {
+    // 이전, 다음 버튼 숨기기
+    document.getElementById('prevPageButton').style.display = 'none';
+    document.getElementById('nextPageButton').style.display = 'none';
 
-    <!-- 월간 생산량 데이터 가져오는 부분 -->
-    document.getElementById('monthlyButton').addEventListener('click', function() {
     fetch('/api/monthlyProduction')
         .then(response => response.json())
         .then(data => {
@@ -95,10 +103,12 @@
             myChart1.data.datasets[0].backgroundColor = 'rgba(255, 99, 132, 0.2)';
             myChart1.data.datasets[0].borderColor = 'rgba(255, 99, 132, 1)';
             myChart1.update();
-        });
+        })
+        .catch(error => console.error('Error fetching monthly production data:', error));
 });
 
-    // Chart2: 생산실적 백분율
+
+// Chart2: 생산실적 백분율
     const myChart2 = new Chart(ctx2, {
     type: 'bar',
     data: {
@@ -136,7 +146,8 @@
     myChart2.data.labels = labels;
     myChart2.data.datasets[0].data = percentages;
     myChart2.update();
-});
+})
+        .catch(error => console.error('Error fetching performance data:', error));
 
     // 백분율 계산 함수
     function calculatePercentages(data) {
@@ -146,4 +157,71 @@
     percentages.push(Math.round(percentage * 100) / 100); // 소수점 둘째 자리까지 반올림
 });
     return percentages;
+}
+
+// 날짜 포맷 함수
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+}
+
+// 페이지 로드 시 차트 초기화 함수
+function initializeCharts() {
+    // 일일 생산량 초기 데이터 가져오기
+    console.log("초기화"+currentMonth)
+    fetch(`/api/dailyProduction?month=${currentMonth}`)
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(item => formatDate(item.received_date));  // 날짜 데이터 변환
+            const values = data.map(item => item.received_quantity);  // 생산 데이터
+
+            // Chart.js 데이터 업데이트
+            myChart1.data.labels = labels;
+            myChart1.data.datasets[0].data = values;
+            myChart1.update();
+        })
+        .catch(error => console.error('Error fetching initial daily production data:', error));
+}
+
+// 이전 달 데이터 가져오기
+document.getElementById('prevPageButton').addEventListener('click', function () {
+    currentMonth--;
+    fetchAndUpdateCharts();
+});
+
+// 다음 달 데이터 가져오기
+document.getElementById('nextPageButton').addEventListener('click', function () {
+    currentMonth++;
+    fetchAndUpdateCharts();
+});
+
+// 데이터 가져오고 차트 업데이트 함수
+function fetchAndUpdateCharts() {
+    // 월이 0보다 작으면 11로 변경 (12월로 이동)
+    if (currentMonth < 0) {
+        currentMonth = 11;
+    }
+    // 월이 11보다 크면 0으로 변경 (1월로 이동)
+    else if (currentMonth > 11) {
+        currentMonth = 0;
+    }
+
+    console.log(currentMonth);
+
+    // 일일 생산량 데이터 업데이트
+    fetch(`/api/dailyProduction?month=${currentMonth}`, {
+        cache: 'no-store' // 캐시 방지 옵션 추가
+    })
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(item => formatDate(item.received_date));  // 날짜 데이터 변환
+            const values = data.map(item => item.received_quantity);  // 생산 데이터
+            myChart1.data.labels = labels;
+            myChart1.data.datasets[0].data = values;
+            myChart1.data.datasets[0].backgroundColor = 'rgba(54, 162, 235, 0.2)';
+            myChart1.data.datasets[0].borderColor = 'rgba(54, 162, 235, 1)';
+            myChart1.update();
+            myChart1.render();
+        })
+        .catch(error => console.error('Error fetching data:', error));
 }
