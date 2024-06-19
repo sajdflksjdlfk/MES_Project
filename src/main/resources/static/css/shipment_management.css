@@ -148,4 +148,39 @@ table.dataTable.display tbody tr:hover {
     }
 }
 
-/* 버튼 */
+/* 승우형 */
+
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+/* 특정 테이블에만 스타일 적용 */
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: center;
+}
+
+.custom-table th,
+.custom-table td {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.custom-table th {
+    background-color: #f2f2f2;
+}
+
+/* 모든 테이블에 테두리 설정 */
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #000;
+}

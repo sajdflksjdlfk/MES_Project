@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ZEGOZERO</title>
+    <th:block th:replace="header :: head"></th:block>
+    <link rel="stylesheet" href="/css/current_status_management.css">
+</head>
+<body>
+
+<!-- 헤더 부분 -->
+<div th:replace="header :: header"></div>
+
+<!-- 컨텐츠 부분 -->
+<div class="p-3">
+    <!-- 위쪽 2칸 -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="p-3 border bg-light">
+                <div class="row">
+                    <div class="col-6">
+                        <button id="dailyButton" class="btn btn-primary" style="width: 100%;">일일 생산량</button>
+                    </div>
+                    <div class="col-6">
+                        <button id="monthlyButton" class="btn btn-secondary" style="width: 100%;">월간 생산량</button>
+                    </div>
+                </div>
+                <canvas id="myChart1"></canvas>
+            </div>
+        </div>
+        <!-- 설비 가동 현황 -->
+        <div class="col-md-9">
+            <div class="p-3 border bg-light">
+                <table id="equipmentTable" style="border-collapse: separate; border-spacing: 5px; width: 100%;">
+                    <thead>
+                    <tr>
+                        <th>추출기1</th>
+                        <th>추출기2</th>
+                        <th>살균기1</th>
+                        <th>살균기2</th>
+                        <th>혼합기1</th>
+                        <th>혼합기2</th>
+                        <th>여과기</th>
+                        <th>충진기1(즙)</th>
+                        <th>충진기2(즙)</th>
+                        <th>충진기3(젤리)</th>
+                        <th>충진기4(젤리)</th>
+                        <th>Box포장기</th>
+                        <th>검사기</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                        <th>대기중</th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- 아래쪽 3칸 -->
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="p-3 border bg-light">
+                <canvas id="myChart2"></canvas>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-3 border bg-light">
+                <table id="myTable1" class="display">
+                    <thead>
+                    <tr>
+                        <th><button onclick="refreshTable1()">새로고침</button></th>
+                        <th>예상 생산량</th>
+                        <th>실제 생산량</th>
+                        <th>불량률</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>충진기1(즙)</td>
+                        <td>100box</td>
+                        <td>97box</td>
+                        <td>3%</td>
+                    </tr>
+                    <tr>
+                        <td>충진기2(즙)</td>
+                        <td>200box</td>
+                        <td>198box</td>
+                        <td>1%</td>
+                    </tr>
+                    <tr>
+                        <td>충진기3(젤리)</td>
+                        <td>200box</td>
+                        <td>198box</td>
+                        <td>1%</td>
+                    </tr>
+                    <tr>
+                        <td>충진기4(젤리)</td>
+                        <td>100box</td>
+                        <td>97box</td>
+                        <td>3%</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="p-3 border bg-light">
+                <table id="myTable2" class="display">
+                    <thead>
+                    <tr>
+                        <th>수주번호</th>
+                        <th>현재 상태</th>
+                        <th>작업 진행률</th>
+                        <th>회사명</th>
+                        <th>예상 출하일</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>5</td>
+                        <td>포장</td>
+                        <td>75%</td>
+                        <td>코딩노가다</td>
+                        <td>2024-06-15</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>살균</td>
+                        <td>50%</td>
+                        <td>코딩노가다</td>
+                        <td>2024-06-12</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>추출</td>
+                        <td>16%</td>
+                        <td>코딩노가다</td>
+                        <td>2024-06-20</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- 공통 cdn.js 포함 -->
+<th:block th:replace="header :: footer"></th:block>
+<script src="/js/current_status_management.js"></script>
+
+</body>
+</html>

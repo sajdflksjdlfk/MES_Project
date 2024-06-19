@@ -1,0 +1,43 @@
+/* CUSTOM STYLE */
+@import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+/* 제목 중앙 정렬 및 마진 설정 */
+h1 {
+    text-align: center; /* 텍스트 가운데 정렬 */
+    margin-top: 20px; /* 위쪽 마진 설정 */
+    margin-bottom: 20px; /* 아래쪽 마진 설정 */
+}
+
+body, select, input {
+    font-family: 'Jeju Gothic', sans-serif;
+}
+
+body, select, input {
+    font-family: 'Jeju Gothic', sans-serif;
+}
+
+/* FullCalendar 컨테이너 스타일 */
+#calendar {
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+/* 날짜 셀의 기본 스타일 제거 */
+.fc .fc-daygrid-day-frame {
+    cursor: default;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+/* 날짜 셀의 a 태그 기본 스타일 제거 */
+.fc .fc-daygrid-day-number {
+    color: black;
+    text-decoration: none;
+    cursor: default;
+}
+
+.fc-col-header-cell-cushion{
+    color: black;
+    text-decoration: none;
+    cursor: default;
+}
+
