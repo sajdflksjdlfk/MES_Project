@@ -3,6 +3,7 @@ package com.codehows.zegozero.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Date;
 @Table(name = "orders")
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class Orders {
 
     @Id
@@ -38,5 +40,8 @@ public class Orders {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="plan")
     private Plans plan;
+
+    //원자재 발주 여부 추가.
+    private boolean ordered;
 
 }
