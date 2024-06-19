@@ -10,58 +10,61 @@
 <body>
 <!-- 공통 헤더 포함 -->
 <header th:replace="header :: header"></header>
-
-<div class="row">
-    <div class="col-6">
-        <select style="padding: 5px; border: 1px solid #ccc;">
-            <option value="1">충진기1</option>
-            <option value="2">충진기2</option>
-            <option value="3">충진기3</option>
-            <option value="4">충진기4</option>
-            <option value="5">추출기1</option>
-            <option value="6">추출기2</option>
-            <option value="7">살균기1</option>
-            <option value="8">살균기2</option>
-            <option value="9">혼합기</option>
-            <option value="10">여과기</option>
-            <option value="11">box포장기</option>
-            <option value="12">금속검출기</option>
-        </select>
+<div class="container mt-4">
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col"><h1>설비관리</h1></div>
     </div>
-    <div class="col-3">
-        <input type="text">가동중
+    <div class="row" style="height: 100px; margin-bottom: 10px;">
+        <div class="col-6">
+            <select id="equipmentSelect" style="padding: 5px; border: 1px solid #ccc; width: 100%; height: 100%;">
+                <option value="1">충진기1</option>
+                <option value="2">충진기2</option>
+                <option value="3">충진기3</option>
+                <option value="4">충진기4</option>
+                <option value="5">추출기1</option>
+                <option value="6">추출기2</option>
+                <option value="7">살균기1</option>
+                <option value="8">살균기2</option>
+                <option value="9">혼합기</option>
+                <option value="10">여과기</option>
+                <option value="11">box포장기</option>
+                <option value="12">금속검출기</option>
+            </select>
+        </div>
+        <div class="col-3" style="text-align: center; height: 100%; background-color: #00695C;">
+            <h1 style="color: #ffffff;">가동중</h1>
+        </div>
+        <div class="col-3">
+            <button style="height: 100%; width: 100%;">고장</button>
+        </div>
     </div>
-    <div class="col-3">
-        <button>고장</button>
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col-12">
+            <table id="myTable" class="display" style="width: 100%">
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>품명</th>
+                    <th data-orderable="false">수량</th>
+                    <th>시작 예정 시간</th>
+                    <th>종료 예정 시간</th>
+                    <th>상태</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row" style="height: 200px; margin-bottom: 10px;">
+        <div class="col-6">
+            <button style="height: 100%; width: 100%;">START</button>
+        </div>
+        <div class="col-6">
+            <button style="height: 100%; width: 100%;">STOP</button>
+        </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-8">
-        <table id="myTable" class="display">
-            <thead>
-            <tr>
-                <th>번호</th>
-                <th>품명</th>
-                <th>수량</th>
-                <th data-orderable="false">시작 예정 시간</th>
-                <th>종료 예정 시간</th>
-                <th>상태</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
-</div>
-<div class="row">
-    <div class="col-6">
-        <button>start</button>
-    </div>
-    <div class="col-6">
-        <button>stop</button>
-    </div>
-</div>
-
 
 <!-- 공통 cdn.js 포함 -->
 <th:block th:replace="header :: footer"></th:block>

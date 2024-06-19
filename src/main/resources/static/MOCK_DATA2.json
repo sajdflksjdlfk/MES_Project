@@ -1,0 +1,162 @@
+[
+    {
+        "equipment_plan_id": 1,
+        "product_name": "Widget A",
+        "quantity": 100,
+        "estimated_start_date": "2024-07-01",
+        "estimated_end_date": "2024-07-10",
+        "status": "Pending"
+    },
+    {
+        "equipment_plan_id": 2,
+        "product_name": "Widget B",
+        "quantity": 200,
+        "estimated_start_date": "2024-07-02",
+        "estimated_end_date": "2024-07-12",
+        "status": "In Progress"
+    },
+    {
+        "equipment_plan_id": 3,
+        "product_name": "Widget C",
+        "quantity": 150,
+        "estimated_start_date": "2024-07-03",
+        "estimated_end_date": "2024-07-13",
+        "status": "Completed"
+    },
+    {
+        "equipment_plan_id": 4,
+        "product_name": "Gadget A",
+        "quantity": 120,
+        "estimated_start_date": "2024-07-04",
+        "estimated_end_date": "2024-07-14",
+        "status": "Pending"
+    },
+    {
+        "equipment_plan_id": 5,
+        "product_name": "Gadget B",
+        "quantity": 130,
+        "estimated_start_date": "2024-07-05",
+        "estimated_end_date": "2024-07-15",
+        "status": "In Progress"
+    },
+    {
+        "equipment_plan_id": 6,
+        "product_name": "Gadget C",
+        "quantity": 180,
+        "estimated_start_date": "2024-07-06",
+        "estimated_end_date": "2024-07-16",
+        "status": "Completed"
+    },
+    {
+        "equipment_plan_id": 7,
+        "product_name": "Device A",
+        "quantity": 140,
+        "estimated_start_date": "2024-07-07",
+        "estimated_end_date": "2024-07-17",
+        "status": "Pending"
+    },
+    {
+        "equipment_plan_id": 8,
+        "product_name": "Device B",
+        "quantity": 160,
+        "estimated_start_date": "2024-07-08",
+        "estimated_end_date": "2024-07-18",
+        "status": "In Progress"
+    },
+    {
+        "equipment_plan_id": 9,
+        "product_name": "Device C",
+        "quantity": 110,
+        "estimated_start_date": "2024-07-09",
+        "estimated_end_date": "2024-07-19",
+        "status": "Completed"
+    },
+    {
+        "equipment_plan_id": 10,
+        "product_name": "Tool A",
+        "quantity": 190,
+        "estimated_start_date": "2024-07-10",
+        "estimated_end_date": "2024-07-20",
+        "status": "Pending"
+    },
+    {
+        "equipment_plan_id": 11,
+        "product_name": "Tool B",
+        "quantity": 175,
+        "estimated_start_date": "2024-07-11",
+        "estimated_end_date": "2024-07-21",
+        "status": "In Progress"
+    },
+    {
+        "equipment_plan_id": 12,
+        "product_name": "Tool C",
+        "quantity": 155,
+        "estimated_start_date": "2024-07-12",
+        "estimated_end_date": "2024-07-22",
+        "status": "Completed"
+    },
+    {
+        "equipment_plan_id": 13,
+        "product_name": "Instrument A",
+        "quantity": 105,
+        "estimated_start_date": "2024-07-13",
+        "estimated_end_date": "2024-07-23",
+        "status": "Pending"
+    },
+    {
+        "equipment_plan_id": 14,
+        "product_name": "Instrument B",
+        "quantity": 165,
+        "estimated_start_date": "2024-07-14",
+        "estimated_end_date": "2024-07-24",
+        "status": "In Progress"
+    },
+    {
+        "equipment_plan_id": 15,
+        "product_name": "Instrument C",
+        "quantity": 135,
+        "estimated_start_date": "2024-07-15",
+        "estimated_end_date": "2024-07-25",
+        "status": "Completed"
+    },
+    {
+        "equipment_plan_id": 16,
+        "product_name": "Apparatus A",
+        "quantity": 115,
+        "estimated_start_date": "2024-07-16",
+        "estimated_end_date": "2024-07-26",
+        "status": "Pending"
+    },
+    {
+        "equipment_plan_id": 17,
+        "product_name": "Apparatus B",
+        "quantity": 125,
+        "estimated_start_date": "2024-07-17",
+        "estimated_end_date": "2024-07-27",
+        "status": "In Progress"
+    },
+    {
+        "equipment_plan_id": 18,
+        "product_name": "Apparatus C",
+        "quantity": 145,
+        "estimated_start_date": "2024-07-18",
+        "estimated_end_date": "2024-07-28",
+        "status": "Completed"
+    },
+    {
+        "equipment_plan_id": 19,
+        "product_name": "Machine A",
+        "quantity": 170,
+        "estimated_start_date": "2024-07-19",
+        "estimated_end_date": "2024-07-29",
+        "status": "Pending"
+    },
+    {
+        "equipment_plan_id": 20,
+        "product_name": "Machine B",
+        "quantity": 185,
+        "estimated_start_date": "2024-07-20",
+        "estimated_end_date": "2024-07-30",
+        "status": "In Progress"
+    }
+]

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>생산계획</title>
+    <th:block th:replace="header :: head"></th:block>
+    <link rel="stylesheet" href="/css/production_plan.css">
+</head>
+<body>
+<!-- 공통 헤더 포함 -->
+<header th:replace="header :: header"></header>
+<div class="container mt-4">
+    <div class="row">
+        <h1>생산 계획</h1>
+    </div>
+    <div class="row" style="margin-bottom: 10px;">
+        <div id='calendar'></div>
+    </div>
+</div>
+
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js'></script>
+<!-- 공통 cdn.js 포함 -->
+<th:block th:replace="header :: footer"></th:block>
+<script src="/js/production_plan.js"></script>
+</body>
+</html>

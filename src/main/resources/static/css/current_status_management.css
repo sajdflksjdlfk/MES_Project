@@ -148,4 +148,16 @@ table.dataTable.display tbody tr:hover {
     }
 }
 
-/* 버튼 */
+/*민규*/
+/* 드롭다운 */
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+}
+/* 설비 가동 현황 */
+table#equipmentTable th {
+    border: 1px solid black;
+    padding: 8px 15px; /* 좌우 여백 조절 */
+    text-align: center;
+    background-color: #f2f2f2;
+}

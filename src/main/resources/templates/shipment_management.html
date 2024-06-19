@@ -3,48 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Main Page</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link href="https://cdn.datatables.net/v/dt/dt-2.0.8/datatables.min.css" rel="stylesheet">
-    <style>
-        .center-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            width: 100%;
-        }
-
-        /* 특정 테이블에만 스타일 적용 */
-        .custom-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 18px;
-            text-align: center;
-        }
-
-        .custom-table th,
-        .custom-table td {
-            border: 1px solid #000;
-            padding: 8px;
-            text-align: center;
-            vertical-align: middle;
-        }
-
-        .custom-table th {
-            background-color: #f2f2f2;
-        }
-
-        /* 모든 테이블에 테두리 설정 */
-        .table-bordered th,
-        .table-bordered td {
-            border: 1px solid #000;
-        }
-
-    </style>
+    <title>출하관리</title>
+    <!-- 공통 cdn.css 포함 -->
+    <th:block th:replace="header :: head"></th:block>
+    <link rel="stylesheet" href="/css/shipment_management.css">
 </head>
-
 <body>
 <!-- 공통 헤더 포함 -->
 <header th:replace="header :: header"></header>
@@ -148,47 +111,9 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
-<script>
-    $(document).ready(function() {
-        var tableIds = ['#example', '#example2'];
-
-        $.each(tableIds, function(index, tableId) {
-            $(tableId).DataTable({
-                paging: false,
-                lengthChange: false,
-                searching: false,
-                select: false,
-                info: false
-            });
-        });
-
-        // 출하 버튼 클릭 이벤트 처리
-        $('.btn-ship').click(function() {
-            var $row = $(this).closest('tr'); // 클릭된 버튼의 부모 행을 선택합니다.
-            var rowData = $row.find('td').map(function() {
-                return $(this).text(); // 선택된 행의 데이터를 배열로 가져옵니다.
-            }).get();
-
-            // 출하 이력 테이블에 행 추가
-            $('#example2').find('tbody').append('<tr>' +
-                '<td>' + rowData[1] + '</td>' +
-                '<td>' + rowData[2] + '</td>' +
-                '<td>' + rowData[3] + '</td>' +
-                '<td>' + rowData[4] + '</td>' +
-                '<td>' + rowData[5] + '</td>' +
-                '<td>' + rowData[6] + '</td>' +
-                '<td>' + new Date().toLocaleDateString() + '</td>' +
-                '</tr>');
-
-            // 선택된 행 삭제
-            $row.remove();
-        });
-    });
-</script>
-
+<!-- 공통 cdn.js 포함 -->
+<th:block th:replace="header :: footer"></th:block>
+<script src="/js/shipment_management.js"></script>
 </body>
 
 </html>

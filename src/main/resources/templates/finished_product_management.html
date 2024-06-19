@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>완제품 재고 관리</title>
+    <th:block th:replace="header :: head"></th:block>
+    <link rel="stylesheet" href="/css/finished_product_management.css">
+</head>
+<body>
+<!-- 공통 헤더 포함 -->
+<header th:replace="header :: header"></header>
+<div class="container mt-4">
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col"><h1>완제품 재고 관리</h1></div>
+    </div>
+    <div class="row" style="margin-bottom: 10px;">
+        <table style="width: 100%; border-collapse: collapse; border: 1px solid black; text-align: center;">
+            <thead>
+            <tr>
+                <th style="border: 1px solid black; padding: 8px;">양배추즙</th>
+                <th style="border: 1px solid black; padding: 8px;">흑마늘즙</th>
+                <th style="border: 1px solid black; padding: 8px;">석류젤리</th>
+                <th style="border: 1px solid black; padding: 8px;">매실젤리</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td style="border: 1px solid black; padding: 8px;">1box</td>
+                <td style="border: 1px solid black; padding: 8px;">1box</td>
+                <td style="border: 1px solid black; padding: 8px;">1box</td>
+                <td style="border: 1px solid black; padding: 8px;">1box</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row" style="margin-bottom: 10px;">
+        <table id="myTable" class="display" style="width: 100%">
+            <thead>
+            <tr>
+                <th>수주번호</th>
+                <th>완제품명</th>
+                <th data-orderable="false">입고량</th>
+                <th>입고날짜</th>
+                <th data-orderable="false">출고량</th>
+                <th>출고날짜</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 공통 cdn.js 포함 -->
+<th:block th:replace="header :: footer"></th:block>
+<script src="/js/finished_product_management.js"></script>
+</body>
+</html>
