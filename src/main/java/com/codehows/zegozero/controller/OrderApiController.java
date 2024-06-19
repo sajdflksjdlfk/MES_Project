@@ -33,7 +33,7 @@ public class OrderApiController {
         }
 
         if (Orderdata.getProduction_quantity() < 0) {
-            return ResponseEntity.badRequest().body("Production quantity cannot be negative");
+            return ResponseEntity.badRequest().body("주문수량보다 재고가 많을수는 없습니다.");
         }
 
         orderService.save(Orderdata);
@@ -48,9 +48,24 @@ public class OrderApiController {
 
         Map<String, Object> Order_DtoList1 = new HashMap<String, Object>();
 
-        List<Order_Dto> Order_DtoList = orderService.findAll().stream()
+        List<Order_Dto> Order_DtoList = orderService.findAllByShippingDateIsNull().stream()
                         .map(a ->new Order_Dto(a))
                         .collect(Collectors.toList());
+
+        Order_DtoList1.put("data",Order_DtoList);
+
+        // 원하는 작업 후 데이터를 담은 객체를 반환
+        return Order_DtoList1;
+    }
+
+    @GetMapping("/completedorder")
+    public Map<String, Object> completedApiOrder() throws IOException {
+
+        Map<String, Object> Order_DtoList1 = new HashMap<String, Object>();
+
+        List<Order_Dto> Order_DtoList = orderService.findAllByShippingDateIsNotNull().stream()
+                .map(a ->new Order_Dto(a))
+                .collect(Collectors.toList());
 
         Order_DtoList1.put("data",Order_DtoList);
 

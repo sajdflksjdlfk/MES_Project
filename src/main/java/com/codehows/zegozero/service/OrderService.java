@@ -37,6 +37,16 @@ public class OrderService {
         return ordersRepository.findAll();
     }
 
+    // shipping_date가 null인 Orders를 찾는 메서드
+    public List<Orders> findAllByShippingDateIsNull() {
+        return ordersRepository.findAllByShippingDateIsNull();
+    }
+
+    // shipping_date가 null이 아닌 Orders를 찾는 메서드
+    public List<Orders> findAllByShippingDateIsNotNull() {
+        return ordersRepository.findAllByShippingDateIsNotNull();
+    }
+
     //게시글 삭제
     @Transactional
     public void deleteOrder(Integer order_id) {
