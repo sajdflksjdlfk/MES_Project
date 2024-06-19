@@ -126,11 +126,15 @@ $(document).ready(function () {
             data: JSON.stringify(Orderdata),
             contentType: "application/json",
             success: function (response) {
+                closePopup("registrationPopup");
                 closePopup("confirmationPopup");
                 table.ajax.reload(); // 테이블 새로고침
             },
             error: function (xhr, status, error) {
-                console.error('Error occurred during order POST:', error);
+                // 서버로부터의 오류 메시지를 표시
+                alert('Error occurred during order POST: ' + xhr.responseText);
+                closePopup("registrationPopup");
+                closePopup("confirmationPopup");
             }
         });
     });
@@ -158,12 +162,20 @@ $(document).ready(function () {
         $("#" + popupId).fadeIn();
     }
 
+    $("#registcancle").click(function (){
+       closePopup("registrationPopup");
+    });
+
+    $("#confirmcancle").click(function (){
+        closePopup("confirmationPopup");
+    });
+
     // 팝업 닫기 함수
     function closePopup(popupId) {
         $("#" + popupId).fadeOut();
 
         // 팝업 안의 input 및 select 초기화
-        $("#" + popupId).find("input[type=text]").val("");
+        $("#" + popupId).find("input[type=text], input[type=number]").val("");
         $("#" + popupId).find("select").val("양배추즙");
     }
 

@@ -3,8 +3,10 @@ package com.codehows.zegozero.controller;
 import com.codehows.zegozero.dto.Order_Dto;
 import com.codehows.zegozero.entity.Orders;
 import com.codehows.zegozero.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -22,13 +24,24 @@ public class OrderApiController {
     private final OrderService orderService;
 
     @PostMapping("/order")
-    public ResponseEntity<?> registApiOrder(@RequestBody Order_Dto Orderdata) throws IOException {
+    public ResponseEntity<?> registApiOrder(@Valid @RequestBody Order_Dto Orderdata, BindingResult bindingResult) throws IOException {
+
+        if (bindingResult.hasErrors()) {
+            StringBuilder errorMessage = new StringBuilder();
+            bindingResult.getAllErrors().forEach(error -> errorMessage.append(error.getDefaultMessage()).append("; "));
+            return ResponseEntity.badRequest().body(errorMessage.toString());
+        }
+
+        if (Orderdata.getProduction_quantity() < 0) {
+            return ResponseEntity.badRequest().body("Production quantity cannot be negative");
+        }
 
         orderService.save(Orderdata);
 
         // 원하는 작업 후 데이터를 담은 객체를 반환
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body("Order saved successfully");
     }
+
 
     @GetMapping("/progressorder")
     public Map<String, Object> progressApiOrder() throws IOException {
