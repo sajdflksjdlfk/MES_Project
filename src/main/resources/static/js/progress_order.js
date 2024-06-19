@@ -1,9 +1,9 @@
 $(document).ready(function () {
-
     var table = $('#myTable').DataTable({
         ajax: {
-            url: 'MOCK_DATA.json',
-            dataSrc: ''
+            url: '/api/progressorder',
+            type: 'GET',
+            dataSrc: 'data'
         },
         responsive: true,
         orderMulti: true,
@@ -20,11 +20,9 @@ $(document).ready(function () {
             {
                 // 삭제 버튼 칼럼 설정
                 render: function (data, type, full, meta) {
-                    if (full.deletable) {
-                        return '<button class="btn btn-danger btn-sm delete-button">삭제</button>';
-                    } else {
-                        return '삭제불가능';
-                    }
+                    return full.deletable
+                        ? '<button class="btn btn-danger btn-sm delete-button">삭제</button>'
+                        : '삭제불가능';
                 }
             }
         ],
@@ -73,38 +71,100 @@ $(document).ready(function () {
         handleDelete(data.order_id);
     });
 
-    // 열 선택 버튼 클릭 시 이벤트 처리
-    $('#myTable').on('click', '.colVisButton', function() {
-        table.buttons(['.buttons-colvis']).trigger();
-    });
-
-});
-
-// 팝업 열기/닫기 함수
-function openPopup(popupId) {
-    $("#" + popupId).fadeIn();
-}
-
-function closePopup(popupId) {
-    $("#" + popupId).fadeOut();
-}
-
-// 팝업 열기 이벤트
-$(document).ready(function () {
+    // 주문 등록 팝업 열기 이벤트
     $("#openRegistrationPopup").click(function () {
         openPopup("registrationPopup");
     });
 
+    // 주문 확인 팝업 열기 이벤트
     $("#openConfirmationPopup").click(function () {
+        var productName = document.getElementById('productName').value;
+        var orderQuantity = document.getElementById('orderQuantity').value;
+        var stockUsage = document.getElementById('stockUsage').value;
+        var productionQuantity = orderQuantity - stockUsage;
+        var expectedShipmentDate = document.getElementById('expectedShipmentDate').value;
+        var customer = document.getElementById('customer').value;
+        var deliveryAddress = document.getElementById('deliveryAddress').value;
+
+        // Confirm 팝업에 값 설정
+        document.getElementById('confirmProductName').value = productName;
+        document.getElementById('confirmOrderQuantity').value = orderQuantity;
+        document.getElementById('confirmStockUsage').value = stockUsage;
+        document.getElementById('confirmProductionQuantity').value = productionQuantity;
+        document.getElementById('confirmExpectedShipmentDate').value = expectedShipmentDate;
+        document.getElementById('confirmCustomer').value = customer;
+        document.getElementById('confirmDeliveryAddress').value = deliveryAddress;
+
+        // 팝업 열기 및 닫기
         closePopup("registrationPopup");
         openPopup("confirmationPopup");
     });
-});
 
-// 삭제 버튼 클릭 시 처리할 함수
-function handleDelete(orderId) {
-    if (confirm('정말로 삭제하시겠습니까?')) {
-        // 여기에 삭제 처리를 수행하는 로직을 추가할 수 있습니다.
-        alert('Deleted row with ID: ' + orderId);
+    // 주문 확인 버튼 클릭 시 처리
+    $("#confirm").click(function () {
+        var productName = document.getElementById('confirmProductName').value;
+        var quantity = parseInt(document.getElementById('confirmOrderQuantity').value) || 0;
+        var used_inventory = parseInt(document.getElementById('confirmStockUsage').value) || 0;
+        var production_quantity = quantity - used_inventory;
+        var expected_shipping_date = document.getElementById('confirmExpectedShipmentDate').value;
+        var customer_name = document.getElementById('confirmCustomer').value;
+        var delivery_address = document.getElementById('confirmDeliveryAddress').value;
+
+        var Orderdata = {
+            product_name: productName,
+            quantity: quantity,
+            used_inventory: used_inventory,
+            production_quantity: production_quantity,
+            expected_shipping_date: expected_shipping_date,
+            customer_name: customer_name,
+            delivery_address: delivery_address
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/api/order",
+            data: JSON.stringify(Orderdata),
+            contentType: "application/json",
+            success: function (response) {
+                closePopup("confirmationPopup");
+                table.ajax.reload(); // 테이블 새로고침
+            },
+            error: function (xhr, status, error) {
+                console.error('Error occurred during order POST:', error);
+            }
+        });
+    });
+
+    // 삭제 버튼 클릭 시 처리할 함수
+    function handleDelete(orderId) {
+        if (confirm('정말로 삭제하시겠습니까?')) {
+            $.ajax({
+                type: "POST",
+                url: "/api/delete",
+                data: JSON.stringify({ order_id: orderId }), // JSON 문자열로 변환
+                contentType: "application/json",
+                success: function (response) {
+                    table.ajax.reload(); // 테이블 새로고침
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error occurred during order POST:', error);
+                }
+            });
+        }
     }
-}
+
+    // 팝업 열기 함수
+    function openPopup(popupId) {
+        $("#" + popupId).fadeIn();
+    }
+
+    // 팝업 닫기 함수
+    function closePopup(popupId) {
+        $("#" + popupId).fadeOut();
+
+        // 팝업 안의 input 및 select 초기화
+        $("#" + popupId).find("input[type=text]").val("");
+        $("#" + popupId).find("select").val("양배추즙");
+    }
+
+});
