@@ -148,4 +148,46 @@ table.dataTable.display tbody tr:hover {
     }
 }
 
-/* 버튼 */
+#example {
+    margin-top: 50px;
+}
+
+/* 팝업창 스타일 */
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 2000px;
+    max-width: 90%;
+    height: 1000px;
+    max-height: 90%;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.popupbtnarea {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.closepopupbtn {
+    width: 120px;
+    height: 35px;
+    border-radius: 8px;
+    color: white;
+}
+
+.btn-primary {
+    background-color: #5C75E6;
+    border: none;
+}
+
+.btn-danger {
+    background-color: #b12646;
+    border: none;
+}
