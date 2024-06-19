@@ -8,6 +8,16 @@ h1 {
     margin-bottom: 20px; /* 아래쪽 마진 설정 */
 }
 
+/* 설비 thead th 높이 설정 */
+#equipmentTable thead th {
+    height: 200px;
+}
+
+/* 설비 tbody th 높이 설정 */
+#equipmentTable tbody th {
+    height: 100px;
+}
+
 body, select, input {
     font-family: 'Jeju Gothic', sans-serif;
 }
