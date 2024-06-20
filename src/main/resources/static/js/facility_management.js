@@ -17,6 +17,13 @@ $(document).ready(function () {
             responsive: true,
             orderMulti: true,
             columns: [
+                {
+                    // 체크박스 열
+                    orderable: false,
+                    render: function(data, type, full, meta) {
+                        return '<input class="checkbox" type="checkbox" value="' + full.id + '">';
+                    }
+                },
                 { data: 'equipment_plan_id' },
                 { data: 'product_name' },
                 { data: 'quantity' },
@@ -63,11 +70,87 @@ $(document).ready(function () {
             ]
         });
 
+        // 체크박스 클릭 이벤트 설정
+        $('#myTable').on('click', '.checkbox', function() {
+            var isChecked = $(this).prop('checked');
+
+            // 모든 체크박스의 체크 상태 해제
+            $('.checkbox').prop('checked', false);
+
+            // 클릭된 체크박스의 체크 상태 설정
+            $(this).prop('checked', isChecked);
+        });
+
         // 열 선택 버튼 클릭 시 이벤트 처리
         $('#myTable').on('click', '.colVisButton', function() {
             table.buttons(['.buttons-colvis']).trigger();
         });
+
     }
+
+    // START 버튼 클릭 시 이벤트 처리
+    $('#startButton').on('click', function() {
+        // 체크된 체크박스 가져오기
+        var checkedBox = $('.checkbox:checked');
+
+
+        // 체크된 체크박스가 하나인 경우
+        var selectedRow = checkedBox.closest('tr');
+        var rowData = table.row(selectedRow).data();
+        // 셀렉트 박스 값 가져오기
+        var selectedValue = $('#equipmentSelect').val();
+
+        // rowData에 선택된 행의 데이터가 포함됨
+        console.log('선택된 행의 데이터:', rowData);
+        console.log('선택된 설비 start :', selectedValue);
+
+        // 여기서 선택된 데이터에 대한 추가적인 동작을 수행할 수 있습니다.
+        // 예: 선택된 데이터를 서버로 전송하여 처리하는 등의 작업
+
+
+    });
+
+    // stop 버튼 클릭 시 이벤트 처리
+    $('#stopButton').on('click', function() {
+        // 체크된 체크박스 가져오기
+        var checkedBox = $('.checkbox:checked');
+
+
+            var selectedRow = checkedBox.closest('tr');
+            var rowData = table.row(selectedRow).data();
+            // 셀렉트 박스 값 가져오기
+            var selectedValue = $('#equipmentSelect').val();
+
+            // rowData에 선택된 행의 데이터가 포함됨
+            console.log('선택된 행의 데이터:', rowData);
+            console.log('선택된 설비 stop :', selectedValue);
+
+            // 여기서 선택된 데이터에 대한 추가적인 동작을 수행할 수 있습니다.
+            // 예: 선택된 데이터를 서버로 전송하여 처리하는 등의 작업
+
+        // 금속검출기라면
+        if(selectedValue == '11'){
+
+            var finshdata = {
+                product_name: rowData.product_name,
+                received_quantity: rowData.quantity,
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/api/receive",
+                data: JSON.stringify(finshdata),
+                contentType: "application/json",
+                success: function (response) {
+                    alert("박스 포장 종료, 완재품 재고로 입고되었습니다.");
+                },
+                error: function (xhr, status, error) {
+                    alert("시간 저장 중 오류가 발생했습니다.");
+                }
+            });
+
+        }
+    });
 
     // 셀렉트 박스 변경 이벤트 리스너
     $('#equipmentSelect').on('change', function() {

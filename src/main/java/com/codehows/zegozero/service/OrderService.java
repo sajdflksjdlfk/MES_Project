@@ -1,6 +1,7 @@
 package com.codehows.zegozero.service;
 
 import com.codehows.zegozero.dto.Order_Dto;
+import com.codehows.zegozero.dto.Shipment_management_dto;
 import com.codehows.zegozero.entity.Orders;
 import com.codehows.zegozero.repository.OrdersRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -33,6 +35,11 @@ public class OrderService {
         ordersRepository.save(orders);
     }
 
+    public Orders findById(Integer id) {
+        return ordersRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Board not found"));
+    }
+
     public List<Orders> findAll() {
         return ordersRepository.findAll();
     }
@@ -53,6 +60,22 @@ public class OrderService {
         Orders order = ordersRepository.findById(order_id)
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다. id: " + order_id));
         ordersRepository.delete(order);
+    }
+
+    public void update(Shipment_management_dto shippingProduct) {
+        Optional<Orders> optionalOrder = ordersRepository.findById(shippingProduct.getOrder_id());
+
+        if (optionalOrder.isPresent()) {
+            Orders order = optionalOrder.get();
+
+            // 수정할 필드만 설정
+            order.setShipping_date(new Date());
+
+            // 저장
+            ordersRepository.save(order);
+        } else {
+            throw new RuntimeException("Order not found with id");
+        }
     }
 
 }
