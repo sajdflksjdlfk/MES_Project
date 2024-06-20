@@ -1,7 +1,6 @@
 package com.codehows.zegozero.controller;
 
 import com.codehows.zegozero.dto.Order_Dto;
-import com.codehows.zegozero.entity.Orders;
 import com.codehows.zegozero.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,10 +9,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @RestController
@@ -22,6 +21,7 @@ import java.util.stream.Collectors;
 public class OrderApiController {
 
     private final OrderService orderService;
+    private static final Logger logger = Logger.getLogger(OrderApiController.class.getName());
 
     @PostMapping("/order")
     public ResponseEntity<?> registApiOrder(@Valid @RequestBody Order_Dto Orderdata, BindingResult bindingResult) throws IOException {
@@ -41,7 +41,6 @@ public class OrderApiController {
         // 원하는 작업 후 데이터를 담은 객체를 반환
         return ResponseEntity.ok().body("Order saved successfully");
     }
-
 
     @GetMapping("/progressorder")
     public Map<String, Object> progressApiOrder() throws IOException {
