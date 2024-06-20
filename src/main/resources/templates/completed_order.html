@@ -15,7 +15,10 @@
 
 <div class="container mt-4">
     <div class="d-flex justify-content-end mb-3">
-        <button class="btn btn-primary me-2">엑셀로 등록</button>
+        <form th:action="@{/excelorder2}" method="POST" enctype="multipart/form-data" style="margin-right: 10px">
+            <input type="file" th:name="file1">
+            <input th:type="submit" value="import Excel" />
+        </form>
         <button class="btn btn-secondary" id="openRegistrationPopup">수주 등록</button>
     </div>
     <div>
