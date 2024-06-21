@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 public class Equipment2_plan_date_Dto {
+    // 세척 계획
     private int equipmentId;
     private LocalDateTime estimatedStartDate;
     private LocalDateTime estimatedEndDate;
