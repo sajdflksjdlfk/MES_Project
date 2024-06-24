@@ -88,36 +88,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>Tiger Nixon</td>
-                            <td>System Architect</td>
-                            <td>Edinburgh</td>
-                            <td>61</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>Tiger Nixon</td>
-                            <td>System Architect</td>
-                            <td>Edinburgh</td>
-                            <td>61</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>Tiger Nixon</td>
-                            <td>System Architect</td>
-                            <td>Edinburgh</td>
-                            <td>61</td>
-                        </tr>
-                        <!-- 다른 행들도 필요에 따라 추가 -->
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
         <div class="popupbtnarea">
-            <button id="openConfirmationPopup" class="closepopupbtn btn-primary">수주등록</button>
-            <button class="closepopupbtn btn-danger" onclick="closePopup('registrationPopup')">취소</button>
+            <button id="openConfirmationPopup" class="closepopupbtn btn-primary">발주</button>
+            <button id="cancel" class="closepopupbtn btn-danger" >취소</button>
         </div>
     </div>
 </div>
@@ -166,23 +144,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Tiger Nixon</td>
-                            <td>System Architect</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Tiger Nixon</td>
-                            <td>System Architect</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <!-- 코드 계속 -->
-                            <td>Tiger Nixon</td>
-                            <td>System Architect</td>
-                        </tr>
-                        <!-- 다른 행들도 필요에 따라 추가 -->
+                            <!-- 다른 행들도 필요에 따라 추가 -->
                         </tbody>
                     </table>
                 </div>
@@ -195,26 +157,31 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>Tiger Nixon</td>
-                            <td>Tiger Nixon</td>
-                        </tr>
-                        <tr>
-                            <td>Tiger Nixon</td>
-                            <td>Tiger Nixon</td>
-                        </tr>
-                        <tr>
-                            <td>Tiger Nixon</td>
-                            <td>Tiger Nixon</td>
-                        </tr>
-                        <!-- 다른 행들도 필요에 따라 추가 -->
                         </tbody>
                     </table>
+
+
                 </div>
             </div>
         </div>
+
+        <table id="example4" class="table table-bordered display" style="width:100%">
+            <thead>
+            <tr>
+                <th>양배추</th>
+                <th>흑마늘</th>
+                <th>벌꿀</th>
+                <th>석류농축액</th>
+                <th>매실농축액</th>
+                <th>콜라겐</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
         <div class="popupbtnarea">
-            <button class="closepopupbtn btn-primary" onclick="closePopup('confirmationPopup')">닫기</button>
+            <button class="closepopupbtn btn-primary" id="regist" >등록하기</button>
         </div>
     </div>
 </div>
@@ -223,6 +190,9 @@
 <!-- 공통 cdn.js 포함 -->
 <th:block th:replace="header :: footer"></th:block>
 <script src="/js/material_order_management.js"></script>
+<script>
+
+</script>
 </body>
 </html>
 

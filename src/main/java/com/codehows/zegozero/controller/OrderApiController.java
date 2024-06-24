@@ -1,10 +1,15 @@
 package com.codehows.zegozero.controller;
 
+import com.codehows.zegozero.dto.OrderUpdateRequest_Dto;
 import com.codehows.zegozero.dto.Order_Dto;
+
+import com.codehows.zegozero.dto.savePurchaseMaterial_Dto;
 import com.codehows.zegozero.entity.Orders;
+import com.codehows.zegozero.entity.Purchase_matarial;
 import com.codehows.zegozero.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -69,6 +74,66 @@ public class OrderApiController {
             return ResponseEntity.badRequest().body("Order ID is missing");
         }
     }
+
+
+    @GetMapping("/orderPlan")
+    public Map<String, Object> orderPlan() throws IOException {
+        Boolean deletable = true;
+        Map<String, Object> orderPlan = new HashMap<String, Object>();
+
+        List<Order_Dto> orderPlan1 = orderService.findByDeletable(deletable)
+                .stream()
+                .map(a ->new Order_Dto(a))
+                .collect(Collectors.toList());
+
+        System.out.println("123");
+
+        orderPlan.put("data",orderPlan1);
+
+        System.out.println("12333");
+        // 원하는 작업 후 데이터를 담은 객체를 반환
+        return orderPlan;
+    }
+
+
+    @PostMapping("/updateOrderDeletable")
+    public ResponseEntity<String> updateOrderDeletable(@RequestBody OrderUpdateRequest_Dto request) {
+        try {
+            orderService.updateOrderDeletable(request.getOrderIds());
+            return ResponseEntity.ok("Deletable 속성이 업데이트되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 중 오류 발생");
+        }
+
+    }
+
+
+    @GetMapping("/delivered")
+    public Map<String, Object> delivered() throws IOException {
+
+        Boolean deletable = false;
+        Map<String, Object> delivered = new HashMap<String, Object>();
+
+        List<Order_Dto> delivered1 = orderService.findByDeletable(deletable)
+                .stream()
+                .map(a ->new Order_Dto(a))
+                .collect(Collectors.toList());
+
+        delivered.put("data",delivered1);
+
+        // 원하는 작업 후 데이터를 담은 객체를 반환
+
+        return delivered;
+    }
+
+    @PostMapping("savePurchaseMaterial")
+    public ResponseEntity<?> savePurchaseMaterial(@RequestBody savePurchaseMaterial_Dto save){
+
+        Purchase_matarial savePurchaseMaterial =orderService.savePurchaseMaterial(save);
+        return ResponseEntity.ok()
+                .body(savePurchaseMaterial);
+    }
+
 
 
 

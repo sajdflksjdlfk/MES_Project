@@ -45,9 +45,11 @@ public class Order_Dto {
 
     private Boolean deletable;
 
+    private Boolean ordered;
+
     public Order_Dto(Orders orders) {
 
-        this.order_id = orders.getOrder_id();
+        this.order_id = orders.getOrderId();
         this.product_name = orders.getProduct_name();
         this.quantity = orders.getQuantity();
         this.used_inventory = orders.getUsed_inventory();

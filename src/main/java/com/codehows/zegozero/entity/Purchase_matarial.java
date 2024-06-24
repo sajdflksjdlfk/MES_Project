@@ -2,6 +2,7 @@ package com.codehows.zegozero.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +12,6 @@ import java.util.Date;
 @Data
 @Table(name = "purchase_matarial")
 @NoArgsConstructor
-@AllArgsConstructor
 public class Purchase_matarial {
 
     @Id
@@ -32,5 +32,19 @@ public class Purchase_matarial {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="order_id")
     private Orders order_id;
+
+
+    @Builder
+    public Purchase_matarial( int purchase_matarial_id, String raw_material, int order_quantity,
+                              Date purchase_date,Date delivery_completion_date,String delivery_status,
+                              Orders order_id){
+        this.purchase_matarial_id = purchase_matarial_id;
+        this.raw_material = raw_material;
+        this.order_quantity = order_quantity;
+        this.purchase_date = purchase_date;
+        this.delivery_completion_date = delivery_completion_date;
+        this.delivery_status = delivery_status;
+        this.order_id = order_id;
+    }
 
 }

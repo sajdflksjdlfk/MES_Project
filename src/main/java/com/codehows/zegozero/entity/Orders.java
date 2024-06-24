@@ -1,10 +1,7 @@
 package com.codehows.zegozero.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
@@ -19,7 +16,7 @@ public class Orders {
     @Id
     @Column(name = "order_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int order_id;
+    private int orderId;
 
     private String product_name;
 
@@ -41,11 +38,25 @@ public class Orders {
 
     private Boolean deletable;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="plan")
     private Plans plan;
 
     //원자재 발주 여부 추가.
-    private boolean ordered;
+    private Boolean ordered;
 
+    @Builder
+    public Orders(int orderId,String product_name,int quantity,
+                  int used_inventory,int production_quantity,Date order_date,Date expected_shipping_date,
+                    String customer_name,String delivery_address, Boolean deletable) {
+        this. orderId= orderId;
+        this.product_name = product_name;
+        this.used_inventory = used_inventory;
+        this.order_date = order_date;
+        this.expected_shipping_date = expected_shipping_date;
+        this.customer_name = customer_name;
+        this.delivery_address = delivery_address;
+        this.deletable = deletable;
+    }
 }

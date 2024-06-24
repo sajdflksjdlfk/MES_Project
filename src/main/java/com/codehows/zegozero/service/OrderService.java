@@ -1,8 +1,11 @@
 package com.codehows.zegozero.service;
 
 import com.codehows.zegozero.dto.Order_Dto;
+import com.codehows.zegozero.dto.savePurchaseMaterial_Dto;
 import com.codehows.zegozero.entity.Orders;
+import com.codehows.zegozero.entity.Purchase_matarial;
 import com.codehows.zegozero.repository.OrdersRepository;
+import com.codehows.zegozero.repository.PurchaseMatarialRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +19,7 @@ import java.util.List;
 public class OrderService {
 
     private final OrdersRepository ordersRepository;
+    private final PurchaseMatarialRepository purchaseMatarialRepository;
 
     public void save(Order_Dto Orderdata) {
 
@@ -44,5 +48,26 @@ public class OrderService {
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다. id: " + order_id));
         ordersRepository.delete(order);
     }
+
+    public List<Orders> findByDeletable(Boolean deletable){
+        return ordersRepository.findByDeletable(deletable);
+    }
+
+    public void updateOrderDeletable(List<Integer> orderIds) {
+        List<Orders> updateOrders = ordersRepository.findAllByOrderIdIn(orderIds);
+        for (Orders order : updateOrders) {
+            order.setDeletable(false);
+        }
+        ordersRepository.saveAll(updateOrders);
+    }
+
+    public Purchase_matarial savePurchaseMaterial(savePurchaseMaterial_Dto request) {
+        return purchaseMatarialRepository.save(request.toEntity());
+    }
+
+//    public List<Orders> delivered(Boolean deletable){
+//        return ordersRepository.findByDeletable(deletable);
+//    }
+
 
 }
