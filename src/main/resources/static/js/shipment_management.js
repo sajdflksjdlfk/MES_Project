@@ -15,12 +15,15 @@ $(document).ready(function() {
             { title: "배송지", data: 'delivery_address' },
             { title: "출하예정날짜", data: 'expected_shipping_date' },
             {
-                title: "출하", // 칼럼 헤더 이름 설정
-                data: null,  // 데이터 소스가 필요 없음
-                orderable: false,  // 정렬 기능 비활성화
-                // 출하 버튼 칼럼 설정
+                title: "출하",
+                data: null,
+                orderable: false,
                 render: function (data, type, full, meta) {
-                    return '<button class="btn btn-success btn-sm shipping-button">출하</button>';
+                    if (full.delivery_available) {
+                        return '<button class="btn btn-success btn-sm shipping-button" onclick="shipOrder(' + full.order_id + ')">출하</button>';
+                    } else {
+                        return '출하 준비중';
+                    }
                 }
             }
         ],

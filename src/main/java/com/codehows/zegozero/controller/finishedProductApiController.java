@@ -29,6 +29,7 @@ public class finishedProductApiController {
     @PostMapping("/receive")
     public ResponseEntity<?> receive(@RequestBody Finished_product_management_Dto finishedProduct) throws IOException {
 
+        orderService.update2(finishedProduct);
         productService.receivesave(finishedProduct);
         return ResponseEntity.ok().body("saved successfully");
     };
@@ -63,7 +64,7 @@ public class finishedProductApiController {
     public Map<String, Object> finish2() throws IOException {
         Map<String, Object> Finish_DtoList1 = new HashMap<String, Object>();
 
-        List<Finished_product_management_Dto> finishedProductManagementDto = productService.findByShippedQuantityIsNull().stream()
+        List<Finished_product_management_Dto> finishedProductManagementDto = productService.findAllWithReceivedDateNotNull().stream()
                 .map(a ->new Finished_product_management_Dto(a))
                 .collect(Collectors.toList());
 
@@ -78,7 +79,7 @@ public class finishedProductApiController {
     public Map<String, Object> finish3() throws IOException {
         Map<String, Object> Finish_DtoList1 = new HashMap<String, Object>();
 
-        List<Finished_product_management_Dto> finishedProductManagementDto = productService.findByReceivedQuantityIsNull().stream()
+        List<Finished_product_management_Dto> finishedProductManagementDto = productService.findAllWithShippedDateNotNull().stream()
                 .map(a ->new Finished_product_management_Dto(a))
                 .collect(Collectors.toList());
 

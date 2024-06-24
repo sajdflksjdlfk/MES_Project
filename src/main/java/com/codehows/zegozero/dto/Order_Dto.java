@@ -47,6 +47,8 @@ public class Order_Dto {
 
     private Boolean deletable;
 
+    private Boolean Delivery_available;
+
     public Order_Dto(Orders orders) {
 
         this.order_id = orders.getOrder_id();
@@ -60,5 +62,6 @@ public class Order_Dto {
         this.delivery_address = orders.getDelivery_address();
         this.deletable = orders.getDeletable();
         this.shipping_date = orders.getShipping_date();
+        this.Delivery_available = orders.getDelivery_available();
     }
 }

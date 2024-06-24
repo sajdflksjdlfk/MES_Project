@@ -1,5 +1,6 @@
 package com.codehows.zegozero.service;
 
+import com.codehows.zegozero.dto.Finished_product_management_Dto;
 import com.codehows.zegozero.dto.Order_Dto;
 import com.codehows.zegozero.dto.Shipment_management_dto;
 import com.codehows.zegozero.entity.Orders;
@@ -31,6 +32,7 @@ public class OrderService {
         orders.setCustomer_name(Orderdata.getCustomer_name());
         orders.setDelivery_address(Orderdata.getDelivery_address());
         orders.setDeletable(true);
+        orders.setDelivery_available(false);
 
         ordersRepository.save(orders);
     }
@@ -62,6 +64,7 @@ public class OrderService {
         ordersRepository.delete(order);
     }
 
+    // 출하날짜를 수정후 저장
     public void update(Shipment_management_dto shippingProduct) {
         Optional<Orders> optionalOrder = ordersRepository.findById(shippingProduct.getOrder_id());
 
@@ -70,6 +73,23 @@ public class OrderService {
 
             // 수정할 필드만 설정
             order.setShipping_date(new Date());
+
+            // 저장
+            ordersRepository.save(order);
+        } else {
+            throw new RuntimeException("Order not found with id");
+        }
+    }
+
+    // 출하가능하도록 변경
+    public void update2(Finished_product_management_Dto finishedProductManagementDto) {
+        Optional<Orders> optionalOrder = ordersRepository.findById(finishedProductManagementDto.getOrder_id());
+
+        if (optionalOrder.isPresent()) {
+            Orders order = optionalOrder.get();
+
+            // 수정할 필드만 설정
+            order.setDelivery_available(true);
 
             // 저장
             ordersRepository.save(order);

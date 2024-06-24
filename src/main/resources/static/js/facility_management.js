@@ -132,6 +132,7 @@ $(document).ready(function () {
         if(selectedValue == '11'){
 
             var finshdata = {
+                order_id: rowData.equipment_plan_id,
                 product_name: rowData.product_name,
                 received_quantity: rowData.quantity,
             };

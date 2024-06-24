@@ -12,7 +12,7 @@ $(document).ready(function () {
             { data: 'product_name' },
             { data: 'quantity' },
             { data: 'order_date' },
-            { data: 'expected_shipping_date' },
+            { data: 'shipping_date' },
             { data: 'customer_name' },
             { data: 'delivery_address' }
         ],
@@ -120,6 +120,7 @@ $("#confirm").click(function () {
             closePopup("registrationPopup");
             closePopup("confirmationPopup");
             table.ajax.reload(); // 테이블 새로고침
+            location.reload();
         },
         error: function (xhr, status, error) {
             // 서버로부터의 오류 메시지를 표시

@@ -58,6 +58,7 @@ public class finishedProductService {
         }
     }
 
+    // 출하시 출고내역 등록
     public void shippingsave(Shipment_management_dto shippingProduct) {
         Optional<Orders> optionalOrder = ordersRepository.findById(shippingProduct.getOrder_id());
 
@@ -75,18 +76,53 @@ public class finishedProductService {
         }
     }
 
+    // 수주등록시 완제품 재고 출고내역 등록
+    public void orderProductsave(Order_Dto orderDto) {
+            // 출고
+            Finish_product finishProduct = new Finish_product();
+            finishProduct.setProduct_name(orderDto.getProduct_name());
+            finishProduct.setShipped_date(new Date());
+            finishProduct.setShipped_quantity(orderDto.getUsed_inventory());
+            finishProductRepository.save(finishProduct);
+    }
+
     public List<Finish_product> findAll() {
         return finishProductRepository.findAll();
     }
 
     // 입고만 찾는 메서드
-    public List<Finish_product> findByShippedQuantityIsNull() {
-        return finishProductRepository.findByShippedQuantityIsNull();
+    public List<Finish_product> findAllWithReceivedDateNotNull() {
+        return finishProductRepository.findAllWithReceivedDateNotNull();
     }
 
     // 출고만 찾는 메서드
-    public List<Finish_product> findByReceivedQuantityIsNull() {
-        return finishProductRepository.findByReceivedQuantityIsNull();
+    public List<Finish_product> findAllWithShippedDateNotNull() {
+        return finishProductRepository.findAllWithShippedDateNotNull();
+    }
+
+    // 주어진 product_name과 null인 order_id에 해당하는 재고량을 반환하는 메서드
+    public Integer totalProduct(String productName) {
+
+        // shipped quantity 조회
+        Integer shippedQuantity = finishProductRepository.sumShippedQuantityByProductNameAndNullOrderId(productName);
+
+        // Null 체크 추가
+        if (shippedQuantity == null) {
+            shippedQuantity = 0; // 기본값으로 0을 설정하거나 다른 처리를 수행할 수 있습니다.
+        }
+
+        // received quantity 조회
+        Integer receivedQuantity = finishProductRepository.sumReceivedQuantityByProductNameAndNullOrderId(productName);
+
+        // Null 체크 추가
+        if (receivedQuantity == null) {
+            receivedQuantity = 0; // 기본값으로 0을 설정하거나 다른 처리를 수행할 수 있습니다.
+        }
+
+        // 총 재고량 계산
+        int total = receivedQuantity - shippedQuantity;
+
+        return total;
     }
 
 }
