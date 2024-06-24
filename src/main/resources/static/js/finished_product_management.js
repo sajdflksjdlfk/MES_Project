@@ -78,8 +78,7 @@ $(document).ready(function () {
     $('#Select').on('change', function() {
         var selectedValue = $(this).val();
         console.log(selectedValue);
-        var newUrl = 'MOCK_DATA3.json'
-
+        var newUrl
         var newColumns;
         if (selectedValue === '1') {
             newColumns = [

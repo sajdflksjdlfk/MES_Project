@@ -24,7 +24,9 @@ public class Finished_product_management_Dto {
 
     public Finished_product_management_Dto(Finish_product finish_product) {
 
-        this.order_id = finish_product.getOrder_id().getOrder_id();
+        if (finish_product.getOrder_id() != null) {
+            this.order_id = finish_product.getOrder_id().getOrder_id();
+        }
         this.product_name = finish_product.getProduct_name();
         this.received_quantity = finish_product.getReceived_quantity();
         this.received_date = finish_product.getReceived_date();
@@ -32,3 +34,5 @@ public class Finished_product_management_Dto {
         this.shipped_date = finish_product.getShipped_date();
     }
 }
+
+

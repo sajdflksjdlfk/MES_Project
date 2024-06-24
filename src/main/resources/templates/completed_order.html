@@ -15,7 +15,7 @@
 
 <div class="container mt-4">
     <div class="d-flex justify-content-end mb-3">
-        <form th:action="@{/excelorder2}" method="POST" enctype="multipart/form-data" style="margin-right: 10px">
+        <form th:action="@{/excelorder}" method="POST" enctype="multipart/form-data" style="margin-right: 10px">
             <input type="file" th:name="file1">
             <input th:type="submit" value="import Excel" />
         </form>
@@ -56,10 +56,10 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td style="border: 1px solid black; padding: 8px;">1box</td>
-                    <td style="border: 1px solid black; padding: 8px;">1box</td>
-                    <td style="border: 1px solid black; padding: 8px;">1box</td>
-                    <td style="border: 1px solid black; padding: 8px;">1box</td>
+                    <td th:text="${total1}" style="border: 1px solid black; padding: 8px;"></td>
+                    <td th:text="${total2}" style="border: 1px solid black; padding: 8px;"></td>
+                    <td th:text="${total3}" style="border: 1px solid black; padding: 8px;"></td>
+                    <td th:text="${total4}" style="border: 1px solid black; padding: 8px;"></td>
                 </tr>
                 </tbody>
             </table>

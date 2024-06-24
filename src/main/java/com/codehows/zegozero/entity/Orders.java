@@ -39,6 +39,8 @@ public class Orders {
 
     private Boolean deletable;
 
+    private Boolean Delivery_available;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="plan")
     private Plans plan;

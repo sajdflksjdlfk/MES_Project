@@ -1,7 +1,9 @@
 package com.codehows.zegozero.controller;
 
 import com.codehows.zegozero.dto.Order_Dto;
+import com.codehows.zegozero.entity.Orders;
 import com.codehows.zegozero.service.OrderService;
+import com.codehows.zegozero.service.finishedProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 public class OrderApiController {
 
     private final OrderService orderService;
+    private final finishedProductService finishedProductService;
     private static final Logger logger = Logger.getLogger(OrderApiController.class.getName());
 
     @PostMapping("/order")
@@ -36,6 +39,11 @@ public class OrderApiController {
             return ResponseEntity.badRequest().body("주문수량보다 재고가 많을수는 없습니다.");
         }
 
+        if(finishedProductService.totalProduct(Orderdata.getProduct_name()) < Orderdata.getUsed_inventory()){
+            return ResponseEntity.badRequest().body("필요한 재고가 부족합니다.");
+        }
+
+        finishedProductService.orderProductsave(Orderdata);
         orderService.save(Orderdata);
 
         // 원하는 작업 후 데이터를 담은 객체를 반환
