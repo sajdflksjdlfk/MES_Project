@@ -15,5 +15,8 @@ public interface PlansRepository extends JpaRepository<Plans, Integer> {
             "ORDER BY p.plan_id DESC")
     Page<Plans> findLatestPlanByProductName(@Param("productName") String productName, Pageable pageable);
 
+    @Query("SELECT MAX(p.plan_id) FROM Plans p")
+    Integer getMaxPlanId();
+
 
 }

@@ -18,6 +18,7 @@ public class plan_api_controller {
     // 생산계획 개수와 제작수량 계산
     @GetMapping("/calculateProductionQuantity")
     public ResponseEntity<int[]> calculateProductionQuantity(@RequestParam String productName, @RequestParam int productionQuantity) {
+        planService.clearTemporaryPlans();
         int[] result = planService.calculateProductionQuantity(productName, productionQuantity);
         return ResponseEntity.ok(result);
     }
@@ -28,6 +29,5 @@ public class plan_api_controller {
         planService.saveAllPlans();
         return ResponseEntity.ok().build();
     }
-
 
 }

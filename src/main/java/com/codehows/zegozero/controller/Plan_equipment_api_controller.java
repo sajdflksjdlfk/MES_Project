@@ -1,21 +1,13 @@
 package com.codehows.zegozero.controller;
 
-import com.codehows.zegozero.dto.Equipment2_plan_date_Dto;
-import com.codehows.zegozero.dto.Equipment9_plan_date_Dto;
+import com.codehows.zegozero.dto.*;
 import com.codehows.zegozero.service.PlanEquipmentService;
-import com.codehows.zegozero.service.PlanService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @RequiredArgsConstructor
 @RestController
@@ -30,6 +22,8 @@ public class Plan_equipment_api_controller {
             @RequestParam int equipmentId3,
             @RequestParam int equipmentId4,
             @RequestParam int input) {
+
+        planEquipmentService.clearTemporaryPlans();
 
         Object equipmentDetails = planEquipmentService.findEarliestEndDateForEquipments(equipmentId3, equipmentId4, input);
 
@@ -77,4 +71,49 @@ public class Plan_equipment_api_controller {
 
         return ResponseEntity.ok(equipment56Plan);
     }
+
+    // 충진기1,2(즙) 계획 잡기
+    @GetMapping("/id10Plan")
+    public ResponseEntity<Equipment10_plan_date_Dto> id10Plan(
+            @RequestParam String id10StartDate,
+            @RequestParam int id10Input) {
+
+        LocalDateTime startDateTime = LocalDateTime.parse(id10StartDate, DateTimeFormatter.ISO_DATE_TIME);
+        Equipment10_plan_date_Dto equipment10Plan = planEquipmentService.createEquipment10Plan(startDateTime, id10Input);
+
+        return ResponseEntity.ok(equipment10Plan);
+    }
+
+    // 검사기 계획 잡기
+    @GetMapping("/id13Plan")
+    public ResponseEntity<Equipment13_plan_date_Dto> id13Plan(
+            @RequestParam String id13StartDate,
+            @RequestParam int id13Input) {
+
+        LocalDateTime startDateTime = LocalDateTime.parse(id13StartDate, DateTimeFormatter.ISO_DATE_TIME);
+        Equipment13_plan_date_Dto equipment13Plan = planEquipmentService.createEquipment13Plan(startDateTime, id13Input);
+
+        return ResponseEntity.ok(equipment13Plan);
+    }
+
+    // Box포장기 계획 잡기
+    @GetMapping("/id12Plan")
+    public ResponseEntity<Equipment12_plan_date_Dto> id12Plan(
+            @RequestParam String id12StartDate,
+            @RequestParam int id12Input) {
+
+        LocalDateTime startDateTime = LocalDateTime.parse(id12StartDate, DateTimeFormatter.ISO_DATE_TIME);
+        Equipment12_plan_date_Dto equipment12Plan = planEquipmentService.createEquipment12Plan(startDateTime, id12Input);
+
+        return ResponseEntity.ok(equipment12Plan);
+    }
+
+    // 모든 데이터 mysql에 저장
+    @PostMapping("/saveAllEquipmentPlans")
+    public ResponseEntity<Void> saveAllEquipmentPlans() {
+        planEquipmentService.savePlanEquipments();
+        return ResponseEntity.ok().build();
+    }
+
+
 }

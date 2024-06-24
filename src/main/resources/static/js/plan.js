@@ -1,6 +1,6 @@
 $(document).ready(function () {
-    // 주문수량 또는 재고사용 입력 필드의 값이 변경될 때마다 예상출하날짜를 계산
-    $('#productName, #orderQuantity, #stockUsage').on('input change', function () {
+    // 이벤트 리스너 등록: dateCheck 버튼 클릭 시 calculateExpectedShipmentDate 함수 호출
+    $('#dateCheck').on('click', function() {
         calculateExpectedShipmentDate();
     });
 
@@ -23,9 +23,9 @@ $(document).ready(function () {
                     productName: productName,
                     productionQuantity: productionQuantity
                 },
-                success: function (data) {
-                    var numberOfPlans = data[0];
-                    var totalProductionQuantity = data[1];
+                success: function (data) { // 999
+                    var numberOfPlans = data[0]; // 3
+                    var totalProductionQuantity = data[1]; // 333
 
                     var newPlan = numberOfPlans; // 새로운 계획을 새워야 하는지 여부
                     var quantityPlan = totalProductionQuantity; // 실제작수량
@@ -33,11 +33,17 @@ $(document).ready(function () {
                     console.log("만들어야 하는 생산계획 개수: " + numberOfPlans);
                     console.log("마지막 생산계획에 넣어야하는 수량: " + totalProductionQuantity);
 
-                    var id34Input = totalProductionQuantity * 4 * 0.75;
+                    var id34Input = totalProductionQuantity * 4 * 0.75; // 세척 수율 계산
 
                     // 생산계획 1개 만들때 착즙기 시간 계산
                     if (newPlan == 1) {
                         id34Plan(3, 4, id34Input); // 설비 ID를 3과 4로 가정
+                    }else if(newPlan == 2){
+                        id34Plan(3,4, 999);
+                    }else if(newPlan == 3){
+
+                    }else if(newPlan == 4){
+
                     }
                 },
                 error: function (xhr, status, error) {
@@ -81,7 +87,7 @@ $(document).ready(function () {
                 id34EndDate = equipmentDto.estimatedEndDate;
                 
                 // 여과기 투입량 계산
-                id9Input = equipmentDto.output * 1000;
+                id9Input = equipmentDto.output;
 
                 // equipmentDto.input을 0.75로 나눈 후 올림하여 id2Input에 저장
                 var id2Input = Math.ceil(equipmentDto.input / 0.75);
@@ -255,6 +261,102 @@ $(document).ready(function () {
                 console.log("살균기 종료 시간: " + convertToKoreanTime(data.estimatedEndDate));
                 console.log("살균기 투입량: " + data.input);
                 console.log("살균기 산출량: " + data.output);
+
+                id10Input = data.output;
+                id10StartDate = data.estimatedEndDate
+
+                // 충진기1,2 계획
+                id10Plan(id10StartDate, id10Input);
+            },
+            error: function(xhr, status, error) {
+                // AJAX 요청 중 에러가 발생했을 때 실행되는 함수
+                console.error('AJAX Error:', status, error);
+            }
+        });
+    }
+
+    // 충진기1,2(즙) 계획
+    function id10Plan(id10StartDate, id10Input) {
+        $.ajax({
+            url: '/api/id10Plan',
+            type: 'GET',
+            data: {
+                id10StartDate: id10StartDate,
+                id10Input: id10Input
+            },
+            success: function(data) {
+                // 성공적으로 데이터를 받았을 때 실행되는 함수
+                console.log("충진기 계획");
+                console.log("설비 번호: " + data.equipmentId);
+                console.log("충진기 시작 시간: " + convertToKoreanTime(data.estimatedStartDate));
+                console.log("충진기 종료 시간: " + convertToKoreanTime(data.estimatedEndDate));
+                console.log("충진기 투입량: " + data.input);
+                console.log("충진기 산출량: " + data.output);
+                
+                id13Input = data.output;
+                id13StartDate = data.estimatedEndDate;
+                
+                // 검사기 계획
+                id13Plan(id13StartDate, id13Input);
+            },
+            error: function(xhr, status, error) {
+                // AJAX 요청 중 에러가 발생했을 때 실행되는 함수
+                console.error('AJAX Error:', status, error);
+            }
+        });
+    }
+
+    // 설비13 계획
+    function id13Plan(id13StartDate, id13Input){
+        $.ajax({
+            url: '/api/id13Plan',
+            type: 'GET',
+            data: {
+                id13StartDate: id13StartDate,
+                id13Input: id13Input
+            },
+            success: function(data) {
+                // 성공적으로 데이터를 받았을 때 실행되는 함수
+                console.log("검사기 계획");
+                console.log("설비 번호: " + data.equipmentId);
+                console.log("검사기 시작 시간: " + convertToKoreanTime(data.estimatedStartDate));
+                console.log("검사기 종료 시간: " + convertToKoreanTime(data.estimatedEndDate));
+                console.log("검사기 투입량: " + data.input);
+                console.log("검사기 산출량: " + data.output);
+
+                id12Input = data.output;
+                id12StartDate = data.estimatedEndDate;
+
+                // Box포장기 계획
+                id12Plan(id12StartDate, id12Input);
+            },
+            error: function(xhr, status, error) {
+                // AJAX 요청 중 에러가 발생했을 때 실행되는 함수
+                console.error('AJAX Error:', status, error);
+            }
+        });
+    }
+
+    // Box포장기 계획
+    function id12Plan(id12StartDate, id12Input){
+        $.ajax({
+            url: '/api/id12Plan',
+            type: 'GET',
+            data: {
+                id12StartDate: id12StartDate,
+                id12Input: id12Input
+            },
+            success: function(data) {
+                // 성공적으로 데이터를 받았을 때 실행되는 함수
+                console.log("Box포장기 계획");
+                console.log("설비 번호: " + data.equipmentId);
+                console.log("Box포장기 시작 시간: " + convertToKoreanTime(data.estimatedStartDate));
+                console.log("Box포장기 종료 시간: " + convertToKoreanTime(data.estimatedEndDate));
+                console.log("Box포장기 투입량: " + data.input);
+                console.log("Box포장기 산출량: " + data.output);
+
+                // 예상 출하 날짜를 input 요소에 설정
+                $('#expectedShipmentDate').val(data.estimatedEndDate);
             },
             error: function(xhr, status, error) {
                 // AJAX 요청 중 에러가 발생했을 때 실행되는 함수
@@ -276,7 +378,21 @@ $(document).ready(function () {
             url: '/api/saveAllPlans',
             type: 'POST',
             success: function () {
-                console.log("계획이 성공적으로 저장되었습니다.");
+                console.log("생산계획이 성공적으로 저장되었습니다.");
+                saveAllEquipmentPlans();
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+
+    function saveAllEquipmentPlans() {
+        $.ajax({
+            url: '/api/saveAllEquipmentPlans',
+            type: 'POST',
+            success: function () {
+                console.log("설비계획이 성공적으로 저장되었습니다.");
             },
             error: function (xhr, status, error) {
                 console.error('Error:', error);

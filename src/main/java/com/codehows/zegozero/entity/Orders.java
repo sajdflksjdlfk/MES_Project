@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -29,7 +30,7 @@ public class Orders {
 
     private Date order_date;
 
-    private Date expected_shipping_date;
+    private LocalDateTime expected_shipping_date;
 
     private String customer_name;
 

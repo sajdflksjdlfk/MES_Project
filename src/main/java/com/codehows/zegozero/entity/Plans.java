@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -27,6 +29,6 @@ public class Plans {
 
     private Date completion_date;
 
-    private String status = "대기중";
+    private String status = "planned";
 
 }
