@@ -27,7 +27,7 @@ public class Material_details {
 
     private Date shipped_date;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="purchase_matarial")
     private Purchase_matarial purchase_matarial;
 
