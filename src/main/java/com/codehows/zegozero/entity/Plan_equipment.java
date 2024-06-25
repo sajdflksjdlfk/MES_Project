@@ -4,12 +4,15 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
 @Data
 @Table(name = "plan_equipment")
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Plan_equipment {
@@ -19,9 +22,9 @@ public class Plan_equipment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int equipment_plan_id;
 
-    private Date estimated_start_date;
+    private LocalDateTime estimated_start_date;
 
-    private Date estimated_end_date;
+    private LocalDateTime estimated_end_date;
 
     private Date start_date;
 

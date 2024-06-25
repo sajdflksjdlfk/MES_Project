@@ -1,24 +1,33 @@
 package com.codehows.zegozero.controller;
 
 import com.codehows.zegozero.entity.Plans;
-import com.codehows.zegozero.repository.PlansRepository;
+import com.codehows.zegozero.service.PlanService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class plan_api_controller {
 
-    private final PlansRepository plansRepository;
+    private final PlanService planService;
 
-    @GetMapping("/findLatestPlanByProductName")
-    public Plans findLatestPlanByProductName(@RequestParam String productName){
-        return plansRepository.findLatestPlanByProductName(productName);
+    // 생산계획 개수와 제작수량 계산
+    @GetMapping("/calculateProductionQuantity")
+    public ResponseEntity<int[]> calculateProductionQuantity(@RequestParam String productName, @RequestParam int productionQuantity) {
+        planService.clearTemporaryPlans();
+        int[] result = planService.calculateProductionQuantity(productName, productionQuantity);
+        return ResponseEntity.ok(result);
     }
 
+    // 모든 데이터 mysql에 저장
+    @PostMapping("/saveAllPlans")
+    public ResponseEntity<Void> saveAllPlans() {
+        planService.saveAllPlans();
+        return ResponseEntity.ok().build();
+    }
 
 }
