@@ -1,6 +1,7 @@
 package com.codehows.zegozero.repository;
 
 import com.codehows.zegozero.entity.Orders;
+import com.codehows.zegozero.entity.Plans;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

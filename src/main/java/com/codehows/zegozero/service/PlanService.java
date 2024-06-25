@@ -1,5 +1,6 @@
 package com.codehows.zegozero.service;
 
+import com.codehows.zegozero.entity.Orders;
 import com.codehows.zegozero.entity.Plans;
 import com.codehows.zegozero.repository.PlansRepository;
 import lombok.RequiredArgsConstructor;
@@ -61,5 +62,10 @@ public class PlanService {
         }
 
         return result;
+    }
+
+    public Plans findById(Integer id) {
+        return plansRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Board not found"));
     }
 }

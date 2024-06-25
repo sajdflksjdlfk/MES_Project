@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -21,11 +21,11 @@ public class Material_details {
 
     private int received_quantity;
 
-    private Date received_date;
+    private LocalDateTime received_date;
 
     private int shipped_quantity;
 
-    private Date shipped_date;
+    private LocalDateTime shipped_date;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="purchase_matarial")

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -18,9 +19,9 @@ public class Finished_product_management_Dto {
     private Integer order_id;
     private String product_name;
     private Integer received_quantity;
-    private Date received_date;
+    private LocalDateTime received_date;
     private Integer shipped_quantity;
-    private Date shipped_date;
+    private LocalDateTime shipped_date;
 
     public Finished_product_management_Dto(Finish_product finish_product) {
 

@@ -10,6 +10,8 @@ import com.codehows.zegozero.repository.OrdersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -20,9 +22,11 @@ public class finishedProductService {
 
     private final FinishProductRepository finishProductRepository;
     private final OrdersRepository ordersRepository;
+    private final TimeService timeService;
 
     public void receivesave(Finished_product_management_Dto productDto) {
         Optional<Orders> optionalOrder = ordersRepository.findById(productDto.getOrder_id());
+        LocalDateTime date = timeService.getDateTimeFromDB().getTime();
 
         if (optionalOrder.isPresent()) {
            Orders order = optionalOrder.get();
@@ -36,13 +40,13 @@ public class finishedProductService {
                finishProduct.setProduct_name(productDto.getProduct_name());
                finishProduct.setOrder_id(order);
                finishProduct.setReceived_quantity(production_quantity);
-               finishProduct.setReceived_date(new Date());
+               finishProduct.setReceived_date(date);
                finishProductRepository.save(finishProduct);
 
                Finish_product finishProduct2 = new Finish_product();
                finishProduct2.setProduct_name(productDto.getProduct_name());
                finishProduct2.setReceived_quantity(inventory_quantity);
-               finishProduct2.setReceived_date(new Date());
+               finishProduct2.setReceived_date(date);
                finishProductRepository.save(finishProduct2);
 
            } else {
@@ -51,7 +55,7 @@ public class finishedProductService {
                finishProduct.setProduct_name(productDto.getProduct_name());
                finishProduct.setOrder_id(order);
                finishProduct.setReceived_quantity(production_quantity);
-               finishProduct.setReceived_date(new Date());
+               finishProduct.setReceived_date(date);
                finishProductRepository.save(finishProduct);
            }
 
@@ -61,7 +65,7 @@ public class finishedProductService {
     // 출하시 출고내역 등록
     public void shippingsave(Shipment_management_dto shippingProduct) {
         Optional<Orders> optionalOrder = ordersRepository.findById(shippingProduct.getOrder_id());
-
+        LocalDateTime date = timeService.getDateTimeFromDB().getTime();
         if (optionalOrder.isPresent()) {
             Orders order = optionalOrder.get();
 
@@ -69,7 +73,7 @@ public class finishedProductService {
                 Finish_product finishProduct = new Finish_product();
                 finishProduct.setProduct_name(order.getProduct_name());
                 finishProduct.setOrder_id(order);
-                finishProduct.setShipped_date(new Date());
+                finishProduct.setShipped_date(date);
                 finishProduct.setShipped_quantity(order.getQuantity());
                 finishProductRepository.save(finishProduct);
 
@@ -78,10 +82,11 @@ public class finishedProductService {
 
     // 수주등록시 완제품 재고 출고내역 등록
     public void orderProductsave(Order_Dto orderDto) {
+        LocalDateTime date = timeService.getDateTimeFromDB().getTime();
             // 출고
             Finish_product finishProduct = new Finish_product();
             finishProduct.setProduct_name(orderDto.getProduct_name());
-            finishProduct.setShipped_date(new Date());
+            finishProduct.setShipped_date(date);
             finishProduct.setShipped_quantity(orderDto.getUsed_inventory());
             finishProductRepository.save(finishProduct);
     }
