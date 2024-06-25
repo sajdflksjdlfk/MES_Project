@@ -14,13 +14,11 @@
     <table id="example" class="display" style="width:100%">
         <thead>
         <tr>
-            <th>선택</th>
             <th>수주 번호</th>
             <th>발주 번호</th>
             <th>원자재</th>
             <th>주문량</th>
             <th>주문일</th>
-            <th>배송 완료일</th>
             <th>배송 상태</th>
         </tr>
         </thead>
@@ -30,11 +28,11 @@
 </div>
 <div class="container mt-3">
     <div class="row justify-content-end">
+<!--        <div class="col-auto">-->
+<!--            <button id="deleteSelected" class="btn btn-danger mt-0">선택된 항목 삭제</button>-->
+<!--        </div>-->
         <div class="col-auto">
-            <button id="deleteSelected" class="btn btn-danger mt-0">선택된 항목 삭제</button>
-        </div>
-        <div class="col-auto">
-            <button class="btn btn-primary ms-2" type="button">배송 완료</button>
+            <button class="btn btn-primary ms-2" type="button" id="deliveryOk">배송 완료</button>
         </div>
         <div class="col-auto">
             <button class="btn btn-primary ms-2" type="button" id="openRegistrationPopup">발주 계획 조회</button>
@@ -49,7 +47,7 @@
             <!-- 제목을 포함하는 그리드 -->
             <div class="row mb-3">
                 <div class="col">
-                    <h1 class="text-center mt-5 mb-4">발주 등록</h1>
+                    <h1 class="text-center mt-5 mb-4">발주 계획</h1>
                 </div>
             </div>
 
@@ -106,7 +104,7 @@
             <!-- 제목을 포함하는 그리드 -->
             <div class="row mb-3">
                 <div class="col">
-                    <h1 class="text-center mt-5 mb-4">발주 계획</h1>
+                    <h1 class="text-center mt-5 mb-4">발주 등록</h1>
                 </div>
             </div>
 
@@ -168,13 +166,9 @@
         <table id="example4" class="table table-bordered display" style="width:100%">
             <thead>
             <tr>
-                <th>양배추</th>
-                <th>흑마늘</th>
-                <th>벌꿀</th>
-                <th>석류농축액</th>
-                <th>매실농축액</th>
-                <th>콜라겐</th>
-
+                <th>수주 번호</th>
+                <th>주문할 원자재</th>
+                <th>수량</th>
             </tr>
             </thead>
             <tbody>

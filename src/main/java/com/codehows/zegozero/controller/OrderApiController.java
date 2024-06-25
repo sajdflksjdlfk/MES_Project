@@ -3,6 +3,7 @@ package com.codehows.zegozero.controller;
 import com.codehows.zegozero.dto.OrderUpdateRequest_Dto;
 import com.codehows.zegozero.dto.Order_Dto;
 
+import com.codehows.zegozero.dto.responsePurchaseMaterial_Dto;
 import com.codehows.zegozero.dto.savePurchaseMaterial_Dto;
 import com.codehows.zegozero.entity.Orders;
 import com.codehows.zegozero.entity.Purchase_matarial;
@@ -96,43 +97,96 @@ public class OrderApiController {
     }
 
 
-    @PostMapping("/updateOrderDeletable")
-    public ResponseEntity<String> updateOrderDeletable(@RequestBody OrderUpdateRequest_Dto request) {
-        try {
-            orderService.updateOrderDeletable(request.getOrderIds());
-            return ResponseEntity.ok("Deletable 속성이 업데이트되었습니다.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 중 오류 발생");
-        }
+//    @PostMapping("/updateOrderDeletable")
+//    public ResponseEntity<String> updateOrderDeletable(@RequestBody OrderUpdateRequest_Dto request) {
+//        try {
+//            orderService.updateOrderDeletable(request.getOrderIds());
+//            return ResponseEntity.ok("Deletable 속성이 업데이트되었습니다.");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업데이트 중 오류 발생");
+//        }
+//
+//    }
 
-    }
+    
+    //원자재 구매 테이블에서 orders의 데이터를 가져오기
+
+//    @GetMapping("/delivered")
+//    public ResponseEntity<?> delivered() throws IOException {
+//
+//        //원자재 리포지토리에서 배송중인 값을 찾아서, 가져온 값을 매핑.
+//
+//
+//          String deliveryStatus = "배송중";
+//        Map<String, Object> delivered = new HashMap<String, Object>();
+//
+//        List<responsePurchaseMaterial_Dto> delivered1 = orderService.findByDelivery_status(deliveryStatus)
+//                .stream()
+//                .map(a ->new responsePurchaseMaterial_Dto(a))
+//                .collect(Collectors.toList());
+//
+//        System.out.println("안녕하세요"+delivered1);
+//
+//        delivered.put("data",delivered1);
+////
+////        // 원하는 작업 후 데이터를 담은 객체를 반환
+////
+//        return new ResponseEntity<>(delivered1, HttpStatus.OK);
+//    }
 
 
     @GetMapping("/delivered")
     public Map<String, Object> delivered() throws IOException {
 
-        Boolean deletable = false;
+        String deliveryStatus = "배송중";
         Map<String, Object> delivered = new HashMap<String, Object>();
 
-        List<Order_Dto> delivered1 = orderService.findByDeletable(deletable)
+        List<responsePurchaseMaterial_Dto> delivered1 = orderService.findByDelivery_status(deliveryStatus)
                 .stream()
-                .map(a ->new Order_Dto(a))
+                .map(a ->new responsePurchaseMaterial_Dto(a))
                 .collect(Collectors.toList());
 
         delivered.put("data",delivered1);
-
-        // 원하는 작업 후 데이터를 담은 객체를 반환
 
         return delivered;
     }
 
     @PostMapping("savePurchaseMaterial")
-    public ResponseEntity<?> savePurchaseMaterial(@RequestBody savePurchaseMaterial_Dto save){
+    public ResponseEntity<?> savePurchaseMaterial(@RequestBody List<savePurchaseMaterial_Dto> saveList){
 
-        Purchase_matarial savePurchaseMaterial =orderService.savePurchaseMaterial(save);
-        return ResponseEntity.ok()
-                .body(savePurchaseMaterial);
+        //deletable로 변환하는 매서드 추가
+        Boolean deletable = false;
+
+        for (savePurchaseMaterial_Dto save : saveList) {
+            orderService.savePurchaseMaterial(save);
+
+        }
+        return ResponseEntity.ok().body("All materials saved successfully");
     }
+
+    @PostMapping("deliveryOk")
+    public ResponseEntity<?> deliveryOk(@RequestBody Integer[] deliveryOk){
+
+        System.out.println(deliveryOk[0]);
+        System.out.println(deliveryOk[1]);
+        System.out.println(deliveryOk[2]);
+
+        // 배열 길이를 체크하고 각 값을 출력
+        if (deliveryOk != null && deliveryOk.length > 0) {
+
+            for (int i = 0; i < deliveryOk.length; i++) {
+                System.out.println("Element " + i + ": " + deliveryOk[i]);
+                orderService.findByPurchase_material_id(i);
+            }
+        } else {
+            return ResponseEntity.badRequest().body("No materials provided");
+        }
+        return ResponseEntity.ok().body("All materials saved successfully");
+    }
+
+
+
+
 
 
 

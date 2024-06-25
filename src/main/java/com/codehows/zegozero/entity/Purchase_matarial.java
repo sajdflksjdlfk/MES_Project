@@ -27,9 +27,9 @@ public class Purchase_matarial {
 
     private Date delivery_completion_date;
 
-    private String delivery_status = "배송중";
+    private String delivery_status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="order_id")
     private Orders order_id;
 

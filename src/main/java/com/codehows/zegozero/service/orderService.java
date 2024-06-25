@@ -6,6 +6,7 @@ import com.codehows.zegozero.entity.Orders;
 import com.codehows.zegozero.entity.Purchase_matarial;
 import com.codehows.zegozero.repository.OrdersRepository;
 import com.codehows.zegozero.repository.PurchaseMatarialRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,16 +54,32 @@ public class OrderService {
         return ordersRepository.findByDeletable(deletable);
     }
 
-    public void updateOrderDeletable(List<Integer> orderIds) {
-        List<Orders> updateOrders = ordersRepository.findAllByOrderIdIn(orderIds);
-        for (Orders order : updateOrders) {
-            order.setDeletable(false);
-        }
-        ordersRepository.saveAll(updateOrders);
+    public List<Purchase_matarial> findByDelivery_status(String deliveryStatus){
+
+        return purchaseMatarialRepository.findByDeliveryStatusJPQL(deliveryStatus);
     }
 
-    public Purchase_matarial savePurchaseMaterial(savePurchaseMaterial_Dto request) {
-        return purchaseMatarialRepository.save(request.toEntity());
+
+
+//    public void updateOrderDeletable(Integer orderId) {
+//        Orders updateOrders = ordersRepository.findByOrderId(orderId);
+//        updateOrders.
+//    }
+
+    public void savePurchaseMaterial(savePurchaseMaterial_Dto saveRequest) {
+        Orders orders = ordersRepository.findById(saveRequest.getOrder_id())
+                .orElseThrow(EntityNotFoundException::new);
+        orders.setDeletable(false);
+        purchaseMatarialRepository.save(saveRequest.toEntity(orders));
+    }
+
+    public void findByPurchase_material_id(Integer Purchase_material_id){
+        String deliveryOk = "배송완료";
+        Purchase_matarial purchaseMatarial = purchaseMatarialRepository.findByPurchaseMaterialId(Purchase_material_id);
+        purchaseMatarial.setDelivery_status(deliveryOk);
+
+        System.out.println(purchaseMatarial.getDelivery_status());
+        purchaseMatarialRepository.save(purchaseMatarial);
     }
 
 //    public List<Orders> delivered(Boolean deletable){

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface OrdersRepository extends JpaRepository<Orders, Integer> {
     List<Orders> findByDeletable(Boolean deletable);
-    List<Orders> findAllByOrderIdIn(List<Integer> orderIds);
+//    List<Orders> findAllByOrderIdIn(List<Integer> orderIds);
 
-
+    Orders findByOrderId(Integer orderId);
 }

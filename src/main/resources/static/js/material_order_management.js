@@ -31,7 +31,7 @@ $(document).ready(function() {
 
     //원자재 발주 관리 페이지 테이블
     const aa = $('#example').DataTable({
-        paging: false,
+        paging: true,
         lengthChange: false,
         searching: false,
         select: {
@@ -46,43 +46,80 @@ $(document).ready(function() {
         responsive: true,
         orderMulti: true,
         columns: [
-            {data: 'order_id'},
-            {data: 'product_name'},
-            {data: 'product_name'},
-            {data: 'production_quantity'},
-            {data: 'expected_shipping_date'},
+            {data: 'order_id.orderId'}, // order_id 내부의 orderId
+            {data: 'purchase_matarial_id'},
+            {data: 'raw_material'}, // purchase_matarial의 raw_material
+            {data: 'order_quantity'},
+            {data: 'order_id.order_date'}, // order_id 내부의 production_quantity
+            {data: 'delivery_status'},
         ]
     });
 
 
     //발주 계획 조회 버튼 클릭
     $('#openRegistrationPopup').click(function () {
-
-        //발주 계획 페이지 테이블
-        table2 = $('#example1').DataTable({
-            paging: false,
-            lengthChange: false,
-            searching: false,
-            select: {
-                style: 'multi'
-            },
-            info: false,
-            ajax: {
-                url: '/api/orderPlan',
-                dataSrc: 'data',
-                type: 'GET'
-            },
-            responsive: true,
-            orderMulti: true,
-            columns: [
-                {data: 'order_id'},
-                {data: 'product_name'},
-                {data: 'production_quantity'},
-                {data: 'expected_shipping_date'},
-            ]
-        });
+        if (!table2) {
+            //발주 계획 페이지 테이블
+            table2 = $('#example1').DataTable({
+                paging: false,
+                lengthChange: false,
+                searching: false,
+                select: {
+                    style: 'multi'
+                },
+                info: false,
+                ajax: {
+                    url: '/api/orderPlan',
+                    dataSrc: 'data',
+                    type: 'GET'
+                },
+                responsive: true,
+                orderMulti: true,
+                columns: [
+                    {data: 'order_id'},
+                    {data: 'product_name'},
+                    {data: 'production_quantity'},
+                    {data: 'expected_shipping_date'},
+                ]
+            });
+        }
         openPopup("registrationPopup");
     })
+
+    $('#deliveryOk').click(function () {
+
+        const deliveryOkOrder = [];
+        const deliveryOk = aa.rows('.selected').data().toArray();
+
+        console.log(deliveryOk);
+
+
+        deliveryOk.forEach(function(deliveryOk) {
+            console.log(deliveryOk.purchase_matarial_id); // 각 선택된 행의 order_id 내부의 orderId 속성
+            deliveryOkOrder.push(deliveryOk.purchase_matarial_id);
+        });
+
+        console.log(deliveryOkOrder);
+
+        fetch('/api/deliveryOk', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(deliveryOkOrder)
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', "error");
+            });
+
+
+
+    });
+
 
 
 //     //체크박스 클릭 시 이벤트
@@ -136,6 +173,56 @@ $(document).ready(function() {
     });
 
 
+    document.getElementById("regist").addEventListener("click", async function () {
+
+        try {
+            const response = await fetch('/api/savePurchaseMaterial', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(result) // JSON 배열 전송
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            console.log('Success:', data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+
+        closePopup("confirmationPopup");
+        location.reload();
+
+    });
+
+    $('#cancel').click(function () {
+        closePopup("registrationPopup");
+    });
+
+
+    // $("#regist").click(function () {
+    //
+    //     fetch('/api/savePurchaseMaterial', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({ data: result })
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => console.log('Success:', data))
+    //         .catch((error) => console.error('Error:', error));
+    // });
+
+
+    // });
+
+
+
 
     //1번째 팝업 오픈 매서드
     window.openPopup = function (popupId) {
@@ -150,6 +237,7 @@ $(document).ready(function() {
             table3 = $('#example2').DataTable({
                 lengthChange: false,
                 paging: false,
+                selected:false,
                 searching: false,
                 select: {
                     style: 'multi'
@@ -211,14 +299,14 @@ $(document).ready(function() {
                 // 객체로 만들어 배열에 추가
                 const data1 = {
                     order_id: orderId,
-                    product: '양배추',
-                    quantity: cabbageRequired
+                    raw_material: '양배추',
+                    order_quantity: cabbageRequired
                 };
 
                 const data2 = {
                     order_id: orderId,
-                    product: '벌꿀',
-                    quantity: honeyRequired
+                    raw_material: '벌꿀',
+                    order_quantity: honeyRequired
                 };
 
                 result.push(data1);
@@ -237,14 +325,14 @@ $(document).ready(function() {
                 // 객체로 만들어 배열에 추가
                 const data1 = {
                     order_id: orderId,
-                    product: '흑마늘',
-                    quantity: garlicRequired
+                    raw_material: '흑마늘',
+                    order_quantity: garlicRequired
                 };
 
                 const data2 = {
                     order_id: orderId,
-                    product: '벌꿀',
-                    quantity: honeyRequired2
+                    raw_material: '벌꿀',
+                    order_quantity: honeyRequired2
                 };
 
                 result.push(data1);
@@ -263,14 +351,14 @@ $(document).ready(function() {
                 // 객체로 만들어 배열에 추가
                 const data1 = {
                     order_id: orderId,
-                    product: '석류농축액',
-                    quantity: pomegranateJelly
+                    raw_material: '석류농축액',
+                    order_quantity: pomegranateJelly
                 };
 
                 const data2 = {
                     order_id: orderId,
-                    product: '콜라겐',
-                    quantity: collagenRequired
+                    raw_material: '콜라겐',
+                    order_quantity: collagenRequired
                 };
 
                 result.push(data1);
@@ -287,28 +375,19 @@ $(document).ready(function() {
                 // 객체로 만들어 배열에 추가
                 const data1 = {
                     order_id: orderId,
-                    product: '석류농축액',
-                    quantity: plumJelly
+                    raw_material: '석류농축액',
+                    order_quantity: plumJelly
                 };
 
                 const data2 = {
                     order_id: orderId,
-                    product: '콜라겐',
-                    quantity: collagenRequired2
+                    raw_material: '콜라겐',
+                    order_quantity: collagenRequired2
                 };
 
                 result.push(data1);
                 result.push(data2);
             }
-
-            // console.log(result[0]);
-            // console.log(result[1]);
-            // console.log(result[3]);
-            // console.log(result[4]);
-            // console.log(result[5]);
-            // console.log(result[6]);
-            // console.log(result[7]);
-            // console.log(result[8]);
 
         });
 
@@ -324,14 +403,9 @@ $(document).ready(function() {
                 orderMulti: true,
                 columns: [
                     {data: 'order_id'},
-                    {data: 'product'},
-                    {data: 'quantity'},
+                    {data: 'raw_material'},
+                    {data: 'order_quantity'},
                 ],
-                // initComplete: function() {
-                //     // 테이블 초기화가 완료된 후 데이터 처리
-                //     var allData = table3.rows().data().toArray(); // 데이터를 배열로 변환
-                //     processOrderData(allData); // 데이터 처리 함수 호출
-                // }
 
             })
         }
