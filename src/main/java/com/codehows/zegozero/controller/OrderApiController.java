@@ -167,16 +167,16 @@ public class OrderApiController {
     @PostMapping("deliveryOk")
     public ResponseEntity<?> deliveryOk(@RequestBody Integer[] deliveryOk){
 
-        System.out.println(deliveryOk[0]);
-        System.out.println(deliveryOk[1]);
-        System.out.println(deliveryOk[2]);
+//        System.out.println(deliveryOk[0]);
+//        System.out.println(deliveryOk[1]);
+//        System.out.println(deliveryOk[2]);
 
         // 배열 길이를 체크하고 각 값을 출력
         if (deliveryOk != null && deliveryOk.length > 0) {
 
             for (int i = 0; i < deliveryOk.length; i++) {
                 System.out.println("Element " + i + ": " + deliveryOk[i]);
-                orderService.findByPurchase_material_id(i);
+                orderService.findByPurchase_material_id(deliveryOk[i]);
             }
         } else {
             return ResponseEntity.badRequest().body("No materials provided");

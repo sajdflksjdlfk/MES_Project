@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.ToString;
 import org.hibernate.query.Order;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -19,9 +20,9 @@ public class savePurchaseMaterial_Dto {
 
     private Integer order_quantity;
 
-    private Date purchase_date= new Date();
+    private LocalDateTime purchase_date = LocalDateTime.now();
 
-    private Date delivery_completion_date;
+    private LocalDateTime delivery_completion_date;
 
     private String delivery_status = "배송중";
 

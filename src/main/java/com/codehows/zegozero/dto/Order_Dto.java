@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -29,9 +30,9 @@ public class Order_Dto {
 
     private int production_quantity;
 
-    private Date order_date;
+    private LocalDateTime order_date;
 
-    private Date expected_shipping_date;
+    private LocalDateTime expected_shipping_date;
 
     @NotNull(message = "Customer name cannot be null")
     @Size(min = 1, message = "Customer name cannot be empty")
@@ -41,7 +42,7 @@ public class Order_Dto {
     @Size(min = 1, message = "Delivery address cannot be empty")
     private String delivery_address;
 
-    private Date shipping_date;
+    private LocalDateTime shipping_date;
 
     private Boolean deletable;
 

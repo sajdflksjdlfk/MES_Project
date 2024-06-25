@@ -49,7 +49,7 @@ $(document).ready(function() {
             {data: 'order_id.orderId'}, // order_id 내부의 orderId
             {data: 'purchase_matarial_id'},
             {data: 'raw_material'}, // purchase_matarial의 raw_material
-            {data: 'order_quantity'},
+            {data: 'purchase_date'},
             {data: 'order_id.order_date'}, // order_id 내부의 production_quantity
             {data: 'delivery_status'},
         ]
@@ -115,8 +115,8 @@ $(document).ready(function() {
             .catch((error) => {
                 console.error('Error:', "error");
             });
-
-
+        location.reload();
+        //
 
     });
 

@@ -3,6 +3,7 @@ package com.codehows.zegozero.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -26,15 +27,15 @@ public class Orders {
 
     private int production_quantity;
 
-    private Date order_date;
+    private LocalDateTime order_date;
 
-    private Date expected_shipping_date;
+    private LocalDateTime expected_shipping_date;
 
     private String customer_name;
 
     private String delivery_address;
 
-    private Date shipping_date;
+    private LocalDateTime shipping_date;
 
     private Boolean deletable;
 
@@ -48,7 +49,7 @@ public class Orders {
 
     @Builder
     public Orders(int orderId,String product_name,int quantity,
-                  int used_inventory,int production_quantity,Date order_date,Date expected_shipping_date,
+                  int used_inventory,int production_quantity,LocalDateTime order_date,LocalDateTime expected_shipping_date,
                     String customer_name,String delivery_address, Boolean deletable) {
         this. orderId= orderId;
         this.product_name = product_name;

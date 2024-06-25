@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class OrderService {
         orders.setQuantity(Orderdata.getQuantity());
         orders.setUsed_inventory(Orderdata.getUsed_inventory());
         orders.setProduction_quantity(Orderdata.getProduction_quantity());
-        orders.setOrder_date(new Date());
+        orders.setOrder_date(LocalDateTime.now());
         orders.setExpected_shipping_date(Orderdata.getExpected_shipping_date());
         orders.setCustomer_name(Orderdata.getCustomer_name());
         orders.setDelivery_address(Orderdata.getDelivery_address());

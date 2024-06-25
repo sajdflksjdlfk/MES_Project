@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -18,9 +19,9 @@ public class responsePurchaseMaterial_Dto {
 
     private Integer order_quantity;
 
-    private Date purchase_date;
+    private LocalDateTime purchase_date=LocalDateTime.now();
 
-    private Date delivery_completion_date;
+    private LocalDateTime delivery_completion_date;
 
     private String delivery_status;
 
@@ -34,7 +35,7 @@ public class responsePurchaseMaterial_Dto {
         this.raw_material=purchase_matarial.getRaw_material();
         this.order_quantity=purchase_matarial.getOrder_quantity();
         this.purchase_date=purchase_matarial.getPurchase_date();
-        this.delivery_completion_date=purchase_matarial.getDelivery_completion_date();
+       // this.delivery_completion_date=purchase_matarial.getDelivery_completion_date();
         this.delivery_status=purchase_matarial.getDelivery_status();
         this.order_id=purchase_matarial.getOrder_id();
     }

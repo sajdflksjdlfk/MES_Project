@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -23,9 +24,9 @@ public class Purchase_matarial {
 
     private int order_quantity;
 
-    private Date purchase_date;
+    private LocalDateTime purchase_date;
 
-    private Date delivery_completion_date;
+    private LocalDateTime delivery_completion_date;
 
     private String delivery_status;
 
@@ -36,7 +37,7 @@ public class Purchase_matarial {
 
     @Builder
     public Purchase_matarial( int purchase_matarial_id, String raw_material, int order_quantity,
-                              Date purchase_date,Date delivery_completion_date,String delivery_status,
+                              LocalDateTime purchase_date,LocalDateTime delivery_completion_date,String delivery_status,
                               Orders order_id){
         this.purchase_matarial_id = purchase_matarial_id;
         this.raw_material = raw_material;
