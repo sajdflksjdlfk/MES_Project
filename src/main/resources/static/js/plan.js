@@ -195,21 +195,32 @@ $(document).ready(function () {
         // 발주 시작 시간은 발주 종료 시간에서 1일 21시간 후의 시간으로 설정
         var id1StartDate = new Date(id1EndDate.getTime() - (24 * 60 * 60 * 1000) - (21 * 60 * 60 * 1000));
 
-        // DTO 구성
-        var equipmentDto = {
-            equipmentId: 1, // 장비 ID는 1로 설정
-            estimatedStartDate: id1StartDate,
-            estimatedEndDate: id1EndDate,
-            input: 0, // 발주는 input이 없으므로 0
-            output: id1Input // 발주 산출량 설정
-        };
+        // 날짜를 ISO 8601 형식으로 변환
+        var isoEstimatedStartDate = id1StartDate.toISOString();
+        var isoEstimatedEndDate = id1EndDate.toISOString();
 
-        // 콘솔에 출력
-        console.log("발주 계획");
-        console.log("설비 번호: " + equipmentDto.equipmentId);
-        console.log("발주 시작 시간: " + equipmentDto.estimatedStartDate);
-        console.log("발주 종료 시간: " + equipmentDto.estimatedEndDate);
-        console.log("발주 산출량: " + equipmentDto.output);
+        // AJAX 요청을 통해 데이터를 백엔드로 전송하고 응답을 받음
+        $.ajax({
+            url: '/api/id1Plan',
+            type: 'GET',
+            data: {
+                estimatedStartDate: isoEstimatedStartDate,
+                estimatedEndDate: isoEstimatedEndDate,
+                output: id1Input // 발주 산출량 설정
+            },
+            success: function (data) {
+
+                // 콘솔에 출력
+                console.log("발주 계획");
+                console.log("설비 번호: " + data.equipmentId);
+                console.log("발주 시작 시간: " + convertToKoreanTime(data.estimatedStartDate));
+                console.log("발주 종료 시간: " + convertToKoreanTime(data.estimatedEndDate));
+                console.log("발주 산출량: " + data.output);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
     }
 
     // id9 여과기 계획 잡기

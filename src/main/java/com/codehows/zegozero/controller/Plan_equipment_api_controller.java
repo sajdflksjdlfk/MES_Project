@@ -3,6 +3,7 @@ package com.codehows.zegozero.controller;
 import com.codehows.zegozero.dto.*;
 import com.codehows.zegozero.service.PlanEquipmentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,6 +48,18 @@ public class Plan_equipment_api_controller {
 
         return ResponseEntity.ok(equipment2Plan);
 
+    }
+
+    // 설비1 계획 잡기
+    @GetMapping("/id1Plan")
+    public ResponseEntity<Equipment1_plan_date_Dto> id1Plan(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime estimatedStartDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime estimatedEndDate,
+            @RequestParam int output) {
+
+        Equipment1_plan_date_Dto equipment1Plan = planEquipmentService.createEquipment1Plan(estimatedStartDate, estimatedEndDate, output);
+
+        return ResponseEntity.ok(equipment1Plan);
     }
 
     // 설비9 계획 잡기

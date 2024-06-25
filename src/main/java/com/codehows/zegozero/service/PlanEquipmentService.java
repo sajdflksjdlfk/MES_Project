@@ -303,6 +303,23 @@ public class PlanEquipmentService {
         return new Equipment2_plan_date_Dto(2, adjustedStartTime, endTime, id2Input, id2Output);
     }
 
+    // 발주 계획 생성 메서드
+    public Equipment1_plan_date_Dto createEquipment1Plan(LocalDateTime estimatedStartDate, LocalDateTime estimatedEndDate, int output) {
+        Equipment equipment = new Equipment();
+        equipment.setEquipment_id(1);
+
+        Plan_equipment plan = new Plan_equipment();
+        plan.setEquipment(equipment);
+        plan.setEstimated_start_date(estimatedStartDate);
+        plan.setEstimated_end_date(estimatedEndDate);
+        plan.setInput(0);
+        plan.setOutput(output);
+        temporaryPlans.add(plan);
+
+        // DTO 반환
+        return new Equipment1_plan_date_Dto(1, estimatedStartDate, estimatedEndDate, 0, output);
+    }
+
     // 여과기 계획 생성 메서드
     public Equipment9_plan_date_Dto createEquipment9Plan(LocalDateTime id34EndDate, int id9Input) {
         // 설비9 계획 시작 시간 설정 (id34EndDate를 기준으로 시작)
