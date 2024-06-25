@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     var table = $('#myTable').DataTable({
         ajax: {
             url: '/api/progressorder',
