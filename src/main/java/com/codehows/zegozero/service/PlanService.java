@@ -15,6 +15,7 @@ import java.util.List;
 public class PlanService {
 
     private final PlansRepository plansRepository;
+    private final List<Plans> temporaryPlans = new ArrayList<>(); // 변경: Plans 엔티티의 리스트로 변경
 
     int latestPlanQuantity = 0; // 기존 마지막 계획에 잡혀있는 수량
     int totalProductionQuantity = 0; // 실제작수량
@@ -28,7 +29,8 @@ public class PlanService {
         Plans latestPlan = plansRepository.findLatestPlanByProductName(productName, pageRequest).getContent().stream().findFirst().orElse(null);
 
         if (latestPlan != null) {
-            totalProductionQuantity = productionQuantity;
+            latestPlanQuantity = latestPlan.getPlanned_quantity();
+            totalProductionQuantity = latestPlanQuantity + productionQuantity;
 
             // 기존 생산계획에 추가할 수 있는지 판단
             if (totalProductionQuantity > 333) {
@@ -40,14 +42,27 @@ public class PlanService {
                     numberOfPlans++;
                 }
 
+                for (int i = 0; i < numberOfPlans; i++) {
+                    Plans plan = new Plans();
+                    plan.setProduct_name(productName);
+                    if (i == numberOfPlans - 1) {
+                        plan.setPlanned_quantity(totalProductionQuantity);
+                    } else {
+                        plan.setPlanned_quantity(333);
+                    }
+                    plan.setStatus("planned");
+                    temporaryPlans.add(plan);
+                }
+
                 result[0] = numberOfPlans;
                 result[1] = totalProductionQuantity;
             } else {
-                numberOfPlans = 1;
+                numberOfPlans = 0;
                 result[0] = numberOfPlans;
                 result[1] = totalProductionQuantity;
             }
         } else {
+            latestPlanQuantity = 0;
             totalProductionQuantity = productionQuantity;
             numberOfPlans = 1;
             // 새로 만들어야할 계획 수
@@ -56,10 +71,34 @@ public class PlanService {
                 numberOfPlans++;
             }
 
+            for (int i = 0; i < numberOfPlans; i++) {
+                Plans plan = new Plans();
+                plan.setProduct_name(productName);
+                if (i == numberOfPlans - 1) {
+                    plan.setPlanned_quantity(totalProductionQuantity);
+                } else {
+                    plan.setPlanned_quantity(333);
+                }
+                plan.setStatus("planned");
+                temporaryPlans.add(plan);
+            }
+
             result[0] = numberOfPlans;
             result[1] = totalProductionQuantity;
         }
 
         return result;
+    }
+
+    // 최종적으로 엔티티를 데이터베이스에 저장
+    @Transactional
+    public void saveAllPlans() {
+        plansRepository.saveAll(temporaryPlans);
+        temporaryPlans.clear(); // 저장 후 임시 리스트 초기화
+    }
+
+    // 임시 계획 리스트를 초기화하는 메서드 추가
+    public void clearTemporaryPlans() {
+        temporaryPlans.clear();
     }
 }

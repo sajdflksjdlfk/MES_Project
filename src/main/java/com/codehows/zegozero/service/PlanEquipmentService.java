@@ -17,7 +17,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -27,30 +26,16 @@ public class PlanEquipmentService {
     private final PlanEquipmentRepository planEquipmentRepository;
     private final PlansRepository plansRepository;
 
-    private final List<Plans> Plans = new ArrayList<>();
-
     // 설비별 Dto를 담을 리스트
-    private final List<Plan_equipment> temporaryPlans = new CopyOnWriteArrayList<>();
+    private final List<Plan_equipment> temporaryPlans = new ArrayList<>();
 
     // 설비3 및 설비4의 마지막 예상 출고 날짜 비교
     @Transactional(readOnly = true)
-    public Object findEarliestEndDateForEquipments(String productName, int equipmentId3, int equipmentId4, int input) {
-
-        // 생산계획 dto 저장
-        Plans newplan = new Plans();
-        newplan.setProduct_name(productName);
-        newplan.setPlanned_quantity(input);
-        newplan.setStatus("planned");
-        Plans.add(newplan);
-
+    public Object findEarliestEndDateForEquipments(int equipmentId3, int equipmentId4, int input) {
         Optional<Plan_equipment> equipment1Optional = planEquipmentRepository.findLatestPlanEquipmentByEquipmentId(equipmentId3);
         Optional<Plan_equipment> equipment2Optional = planEquipmentRepository.findLatestPlanEquipmentByEquipmentId(equipmentId4);
 
-        // input 값에 * 4 * 0.75를 한 값을 투입량으로 사용
-        int inputCalculated = (int) (input * 4 * 0.75);
-
-        // 산출량
-        int output = (inputCalculated * 1000) / 5;
+        int output = (input*1000) / 5;
 
         // 현재 한국 시간
         LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
@@ -68,14 +53,14 @@ public class PlanEquipmentService {
             plan.setEquipment(equipment);
             plan.setEstimated_start_date(roundUpToNearest10Minutes(currentDatePlus3Days));
             plan.setEstimated_end_date(roundUpToNearest10Minutes(currentDatePlus3Days.plusDays(1)));
-            plan.setInput(inputCalculated);
+            plan.setInput(input);
             plan.setOutput(output);
             temporaryPlans.add(plan);
             return new Equipment3_plan_date_Dto(
                     equipmentId,
                     roundUpToNearest10Minutes(currentDatePlus3Days),
                     roundUpToNearest10Minutes(currentDatePlus3Days.plusDays(1)),
-                    inputCalculated,
+                    input,
                     output
             );
         }
@@ -99,14 +84,14 @@ public class PlanEquipmentService {
                 plan.setEquipment(equipment);
                 plan.setEstimated_start_date(roundUpToNearest10Minutes(currentDatePlus3Days));
                 plan.setEstimated_end_date(roundUpToNearest10Minutes(currentDatePlus3Days.plusDays(1)));
-                plan.setInput(inputCalculated);
+                plan.setInput(input);
                 plan.setOutput(output);
                 temporaryPlans.add(plan);
                 return new Equipment3_plan_date_Dto(
                         equipmentId,
                         roundUpToNearest10Minutes(currentDatePlus3Days),
                         roundUpToNearest10Minutes(currentDatePlus3Days.plusDays(1)),
-                        inputCalculated,
+                        input,
                         output
                 );
             } else {
@@ -121,14 +106,14 @@ public class PlanEquipmentService {
                 plan.setEquipment(equipment);
                 plan.setEstimated_start_date(roundUpToNearest10Minutes(currentDatePlus3Days));
                 plan.setEstimated_end_date(roundUpToNearest10Minutes(currentDatePlus3Days.plusDays(1)));
-                plan.setInput(inputCalculated);
+                plan.setInput(input);
                 plan.setOutput(output);
                 temporaryPlans.add(plan);
                 return new Equipment4_plan_date_Dto(
                         equipmentId,
                         roundUpToNearest10Minutes(currentDatePlus3Days),
                         roundUpToNearest10Minutes(currentDatePlus3Days.plusDays(1)),
-                        inputCalculated,
+                        input,
                         output
                 );
             }
@@ -153,14 +138,14 @@ public class PlanEquipmentService {
                 plan.setEquipment(equipment);
                 plan.setEstimated_start_date(roundUpToNearest10Minutes(currentDatePlus3Days));
                 plan.setEstimated_end_date(roundUpToNearest10Minutes(currentDatePlus3Days.plusDays(1)));
-                plan.setInput(inputCalculated);
+                plan.setInput(input);
                 plan.setOutput(output);
                 temporaryPlans.add(plan);
                 return new Equipment3_plan_date_Dto(
                         equipmentId,
                         roundUpToNearest10Minutes(currentDatePlus3Days),
                         roundUpToNearest10Minutes(currentDatePlus3Days.plusDays(1)),
-                        inputCalculated,
+                        input,
                         output
                 );
             } else {
@@ -175,14 +160,14 @@ public class PlanEquipmentService {
                 plan.setEquipment(equipment);
                 plan.setEstimated_start_date(roundUpToNearest10Minutes(currentDatePlus3Days));
                 plan.setEstimated_end_date(roundUpToNearest10Minutes(currentDatePlus3Days.plusDays(1)));
-                plan.setInput(inputCalculated);
+                plan.setInput(input);
                 plan.setOutput(output);
                 temporaryPlans.add(plan);
                 return new Equipment4_plan_date_Dto(
                         equipmentId,
                         roundUpToNearest10Minutes(currentDatePlus3Days),
                         roundUpToNearest10Minutes(currentDatePlus3Days.plusDays(1)),
-                        inputCalculated,
+                        input,
                         output
                 );
             }
@@ -210,14 +195,14 @@ public class PlanEquipmentService {
                 plan.setEquipment(equipment);
                 plan.setEstimated_start_date(roundUpToNearest10Minutes(currentDatePlus3Days));
                 plan.setEstimated_end_date(roundUpToNearest10Minutes(currentDatePlus3Days.plusDays(1)));
-                plan.setInput(inputCalculated);
+                plan.setInput(input);
                 plan.setOutput(output);
                 temporaryPlans.add(plan);
                 return new Equipment3_plan_date_Dto(
                         equipmentId,
                         roundUpToNearest10Minutes(currentDatePlus3Days),
                         roundUpToNearest10Minutes(currentDatePlus3Days.plusDays(1)),
-                        inputCalculated,
+                        input,
                         output
                 );
             } else if (endDate4 != null && endDate4.isBefore(currentDatePlus1Day23Hours)) {
@@ -230,14 +215,14 @@ public class PlanEquipmentService {
                 plan.setEquipment(equipment);
                 plan.setEstimated_start_date(roundUpToNearest10Minutes(currentDatePlus3Days));
                 plan.setEstimated_end_date(roundUpToNearest10Minutes(currentDatePlus3Days.plusDays(1)));
-                plan.setInput(inputCalculated);
+                plan.setInput(input);
                 plan.setOutput(output);
                 temporaryPlans.add(plan);
                 return new Equipment4_plan_date_Dto(
                         equipmentId,
                         roundUpToNearest10Minutes(currentDatePlus3Days),
                         roundUpToNearest10Minutes(currentDatePlus3Days.plusDays(1)),
-                        inputCalculated,
+                        input,
                         output
                 );
             }
@@ -257,14 +242,14 @@ public class PlanEquipmentService {
                 plan.setEquipment(equipment);
                 plan.setEstimated_start_date(roundUpToNearest10Minutes(roundUpToNearest10Minutes(modifiedEndDate)));
                 plan.setEstimated_end_date(roundUpToNearest10Minutes(roundUpToNearest10Minutes(modifiedEndDateAdd1Hour)));
-                plan.setInput(inputCalculated);
+                plan.setInput(input);
                 plan.setOutput(output);
                 temporaryPlans.add(plan);
                 return new Equipment3_plan_date_Dto(
                         equipmentId,
                         roundUpToNearest10Minutes(modifiedEndDate),
                         roundUpToNearest10Minutes(modifiedEndDateAdd1Hour),
-                        inputCalculated,
+                        input,
                         output
                 );
             } else {
@@ -277,14 +262,14 @@ public class PlanEquipmentService {
                 plan.setEquipment(equipment);
                 plan.setEstimated_start_date(roundUpToNearest10Minutes(roundUpToNearest10Minutes(modifiedEndDate)));
                 plan.setEstimated_end_date(roundUpToNearest10Minutes(roundUpToNearest10Minutes(modifiedEndDateAdd1Hour)));
-                plan.setInput(inputCalculated);
+                plan.setInput(input);
                 plan.setOutput(output);
                 temporaryPlans.add(plan);
                 return new Equipment4_plan_date_Dto(
                         equipmentId,
                         roundUpToNearest10Minutes(modifiedEndDate),
                         roundUpToNearest10Minutes(modifiedEndDateAdd1Hour),
-                        inputCalculated,
+                        input,
                         output
                 );
             }
@@ -670,13 +655,6 @@ public class PlanEquipmentService {
         }
         return dateTime.withSecond(0).withNano(0);
     }
-    
-    // 생산계획 데이터베이스 저장
-    @Transactional
-    public void saveNewPlan(){
-        plansRepository.saveAll(Plans);
-        Plans.clear();
-    }
 
     // 최종적으로 엔티티를 데이터베이스에 저장
     @Transactional
@@ -703,9 +681,7 @@ public class PlanEquipmentService {
 
     // 임시 계획 리스트를 초기화하는 메서드 추가
     public void clearTemporaryPlans() {
-
         temporaryPlans.clear();
-        Plans.clear();
     }
 
     // 창현 : 오늘에 따른 장비별 계획 조회

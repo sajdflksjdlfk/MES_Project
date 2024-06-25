@@ -29,14 +29,13 @@ public class Plan_equipment_api_controller {
     // 설비 3 및 설비 4의 마지막 예상 출고 날짜 비교
     @GetMapping("/earliestEndDate")
     public ResponseEntity<Object> getEquipmentDetails(
-            @RequestParam String productName,
             @RequestParam int equipmentId3,
             @RequestParam int equipmentId4,
             @RequestParam int input) {
 
         planEquipmentService.clearTemporaryPlans();
 
-        Object equipmentDetails = planEquipmentService.findEarliestEndDateForEquipments(productName, equipmentId3, equipmentId4, input);
+        Object equipmentDetails = planEquipmentService.findEarliestEndDateForEquipments(equipmentId3, equipmentId4, input);
 
         if (equipmentDetails != null) {
             return ResponseEntity.ok(equipmentDetails);
@@ -129,13 +128,6 @@ public class Plan_equipment_api_controller {
         Equipment12_plan_date_Dto equipment12Plan = planEquipmentService.createEquipment12Plan(startDateTime, id12Input);
 
         return ResponseEntity.ok(equipment12Plan);
-    }
-
-    // 생산계획 mysql에 저장
-    @PostMapping("/saveNewPlan")
-    public ResponseEntity<Void> saveNewPlan() {
-        planEquipmentService.saveNewPlan();
-        return ResponseEntity.ok().build();
     }
 
     // 모든 데이터 mysql에 저장

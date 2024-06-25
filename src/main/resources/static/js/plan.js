@@ -1,49 +1,15 @@
 $(document).ready(function () {
-
-    var productName = $('#productName').val();
-
-    // 주문수량, 재고사용을 바꿀때마다 작동
-    $('#productName, #orderQuantity, #stockUsage').on('input change', function () {
+    // 이벤트 리스너 등록: dateCheck 버튼 클릭 시 calculateExpectedShipmentDate 함수 호출
+    $('#dateCheck').on('click', function() {
         calculateExpectedShipmentDate();
     });
 
     $('#confirm').on('click', function () {
-        // 저장 전에 계획이 유효한지 확인
-        if (window.productionPlans) {
-            var newPlan = window.productionPlans.newPlan;
-            var totalProductionQuantity = window.productionPlans.totalProductionQuantity;
-
-            if(newPlan == 1){
-                id34Plan(productName, 3, 4, totalProductionQuantity);
-            }else if(newPlan == 2){
-                id34Plan(productName, 3, 4, 333);
-                setTimeout(function() {
-                    id34Plan(productName, 3, 4, totalProductionQuantity);
-                }, 500); // 0.5초(500밀리초) 후에 호출
-            }else if(newPlan == 3){
-                id34Plan(productName, 3, 4, 333);
-                setTimeout(function() {
-                    id34Plan(productName, 3, 4, 333);
-                }, 500); // 0.5초(500밀리초) 후에 호출
-                setTimeout(function() {
-                    id34Plan(productName, 3, 4, totalProductionQuantity);
-                }, 1000); // 1초(1000밀리초) 후에 호출
-            }else if(newPlan == 4){
-                id34Plan(productName, 3, 4, 333);
-                setTimeout(function() {
-                    id34Plan(productName, 3, 4, 333);
-                }, 500); // 0.5초(500밀리초) 후에 호출
-                setTimeout(function() {
-                    id34Plan(productName, 3, 4, 333);
-                }, 1000); // 1초(1000밀리초) 후에 호출
-                setTimeout(function() {
-                    id34Plan(productName, 3, 4, totalProductionQuantity);
-                }, 1500); // 1.5초(1500밀리초) 후에 호출
-            }
-        }
+        saveAllPlans();
     });
 
     function calculateExpectedShipmentDate() {
+        var productName = $('#productName').val();
         var orderQuantity = parseInt($('#orderQuantity').val()) || 0; // 숫자로 파싱하며, 실패할 경우 0으로 설정
         var stockUsage = parseInt($('#stockUsage').val()) || 0; // 숫자로 파싱하며, 실패할 경우 0으로 설정
         var productionQuantity = Math.ceil((orderQuantity - stockUsage) * 1.031); // 1.031을 곱해서 올림 처리
@@ -67,11 +33,18 @@ $(document).ready(function () {
                     console.log("만들어야 하는 생산계획 개수: " + numberOfPlans);
                     console.log("마지막 생산계획에 넣어야하는 수량: " + totalProductionQuantity);
 
-                    // 생산계획을 saveNewPlan 함수 내에서 처리할 수 있도록 전역 변수로 설정
-                    window.productionPlans = {
-                        newPlan: newPlan,
-                        totalProductionQuantity: totalProductionQuantity
-                    };
+                    var id34Input = totalProductionQuantity * 4 * 0.75; // 세척 수율 계산
+
+                    // 생산계획 1개 만들때 착즙기 시간 계산
+                    if (newPlan == 1) {
+                        id34Plan(3, 4, id34Input); // 설비 ID를 3과 4로 가정
+                    }else if(newPlan == 2){
+                        id34Plan(3,4, 999);
+                    }else if(newPlan == 3){
+
+                    }else if(newPlan == 4){
+
+                    }
                 },
                 error: function (xhr, status, error) {
                     console.error('에러 발생:', error);
@@ -84,12 +57,11 @@ $(document).ready(function () {
     }
 
     // 착즙기 선택 메서드
-    function id34Plan(productName, equipmentId3, equipmentId4, id34Input) {
+    function id34Plan(equipmentId3, equipmentId4, id34Input) {
         $.ajax({
             url: '/api/earliestEndDate',
             type: 'GET',
             data: {
-                productName: productName,
                 equipmentId3: equipmentId3,
                 equipmentId4: equipmentId4,
                 input: id34Input
@@ -113,7 +85,7 @@ $(document).ready(function () {
 
                 // 예상 종료 날짜를 설정
                 id34EndDate = equipmentDto.estimatedEndDate;
-
+                
                 // 여과기 투입량 계산
                 id9Input = equipmentDto.output;
 
@@ -394,7 +366,8 @@ $(document).ready(function () {
                 console.log("Box포장기 투입량: " + data.input);
                 console.log("Box포장기 산출량: " + data.output);
 
-                saveNewPlan();
+                // 예상 출하 날짜를 input 요소에 설정
+                $('#expectedShipmentDate').val(data.estimatedEndDate);
             },
             error: function(xhr, status, error) {
                 // AJAX 요청 중 에러가 발생했을 때 실행되는 함수
@@ -411,9 +384,9 @@ $(document).ready(function () {
     }
 
 
-    function saveNewPlan() {
+    function saveAllPlans() {
         $.ajax({
-            url: '/api/saveNewPlan',
+            url: '/api/saveAllPlans',
             type: 'POST',
             success: function () {
                 console.log("생산계획이 성공적으로 저장되었습니다.");
