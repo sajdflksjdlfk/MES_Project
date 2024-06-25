@@ -28,7 +28,7 @@ public class Orders {
 
     private int production_quantity;
 
-    private Date order_date;
+    private LocalDateTime order_date;
 
     private LocalDateTime expected_shipping_date;
 
@@ -36,14 +36,10 @@ public class Orders {
 
     private String delivery_address;
 
-    private Date shipping_date;
+    private LocalDateTime shipping_date;
 
     private Boolean deletable;
 
     private Boolean Delivery_available;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="plan")
-    private Plans plan;
 
 }

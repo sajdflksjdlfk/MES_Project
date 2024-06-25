@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -23,11 +24,11 @@ public class Finish_product {
 
     private int received_quantity;
 
-    private Date received_date;
+    private LocalDateTime received_date;
 
     private int shipped_quantity;
 
-    private Date shipped_date;
+    private LocalDateTime shipped_date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="order_id")

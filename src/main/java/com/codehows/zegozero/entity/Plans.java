@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,10 +26,14 @@ public class Plans {
 
     private int planned_quantity;
 
-    private Date start_date;
+    private LocalDateTime start_date;
 
-    private Date completion_date;
+    private LocalDateTime completion_date;
 
     private String status = "planned";
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Orders order;
 
 }

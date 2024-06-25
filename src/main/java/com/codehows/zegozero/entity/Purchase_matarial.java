@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -23,9 +24,9 @@ public class Purchase_matarial {
 
     private int order_quantity;
 
-    private Date purchase_date;
+    private LocalDateTime purchase_date;
 
-    private Date delivery_completion_date;
+    private LocalDateTime delivery_completion_date;
 
     private String delivery_status = "배송중";
 

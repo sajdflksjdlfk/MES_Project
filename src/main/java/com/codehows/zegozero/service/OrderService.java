@@ -4,11 +4,14 @@ import com.codehows.zegozero.dto.Finished_product_management_Dto;
 import com.codehows.zegozero.dto.Order_Dto;
 import com.codehows.zegozero.dto.Shipment_management_dto;
 import com.codehows.zegozero.entity.Orders;
+import com.codehows.zegozero.entity.Plans;
 import com.codehows.zegozero.repository.OrdersRepository;
+import com.codehows.zegozero.repository.PlansRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -19,15 +22,19 @@ import java.util.Optional;
 public class OrderService {
 
     private final OrdersRepository ordersRepository;
+    private final TimeService timeService;
+    private final PlanService planService;
 
     public void save(Order_Dto Orderdata) {
+
+        LocalDateTime date = timeService.getDateTimeFromDB().getTime();
 
         Orders orders = new Orders();
         orders.setProduct_name(Orderdata.getProduct_name());
         orders.setQuantity(Orderdata.getQuantity());
         orders.setUsed_inventory(Orderdata.getUsed_inventory());
         orders.setProduction_quantity(Orderdata.getProduction_quantity());
-        orders.setOrder_date(new Date());
+        orders.setOrder_date(date);
         orders.setExpected_shipping_date(Orderdata.getExpected_shipping_date());
         orders.setCustomer_name(Orderdata.getCustomer_name());
         orders.setDelivery_address(Orderdata.getDelivery_address());
@@ -68,11 +75,12 @@ public class OrderService {
     public void update(Shipment_management_dto shippingProduct) {
         Optional<Orders> optionalOrder = ordersRepository.findById(shippingProduct.getOrder_id());
 
+        LocalDateTime date = timeService.getDateTimeFromDB().getTime();
         if (optionalOrder.isPresent()) {
             Orders order = optionalOrder.get();
 
             // 수정할 필드만 설정
-            order.setShipping_date(new Date());
+            order.setShipping_date(date);
 
             // 저장
             ordersRepository.save(order);
@@ -96,6 +104,9 @@ public class OrderService {
         } else {
             throw new RuntimeException("Order not found with id");
         }
+
     }
+
+
 
 }
