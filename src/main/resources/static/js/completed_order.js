@@ -111,24 +111,26 @@ $("#confirm").click(function () {
         delivery_address: delivery_address
     };
 
-    $.ajax({
-        type: "POST",
-        url: "/api/order",
-        data: JSON.stringify(Orderdata),
-        contentType: "application/json",
-        success: function (response) {
-            closePopup("registrationPopup");
-            closePopup("confirmationPopup");
-            table.ajax.reload(); // 테이블 새로고침
-            location.reload();
-        },
-        error: function (xhr, status, error) {
-            // 서버로부터의 오류 메시지를 표시
-            alert('수주를 등록할 수 없습니다: ' + xhr.responseText);
-            closePopup("registrationPopup");
-            closePopup("confirmationPopup");
-        }
-    });
+    setTimeout(function() {
+        $.ajax({
+            type: "POST",
+            url: "/api/order",
+            data: JSON.stringify(Orderdata),
+            contentType: "application/json",
+            success: function (response) {
+                closePopup("registrationPopup");
+                closePopup("confirmationPopup");
+                alert('수주를 등록하였습니다');
+                table.ajax.reload(); // Reload the DataTable
+                location.reload(); // Refresh the page
+            },
+            error: function (xhr, status, error) {
+                alert('수주를 등록할 수 없습니다: ' + xhr.responseText);
+                closePopup("registrationPopup");
+                closePopup("confirmationPopup");
+            }
+        });
+    }, 2000);
 });
 
     // 팝업 열기 함수
