@@ -4,6 +4,13 @@ import com.codehows.zegozero.dto.Finished_product_management_Dto;
 import com.codehows.zegozero.dto.Order_Dto;
 import com.codehows.zegozero.dto.Shipment_management_dto;
 import com.codehows.zegozero.entity.Orders;
+import com.codehows.zegozero.dto.savePurchaseMaterial_Dto;
+import com.codehows.zegozero.entity.Material_details;
+import com.codehows.zegozero.entity.Orders;
+import com.codehows.zegozero.entity.Purchase_matarial;
+import com.codehows.zegozero.repository.*;
+import jakarta.persistence.EntityNotFoundException;
+import com.codehows.zegozero.entity.Plans;
 import com.codehows.zegozero.repository.OrdersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,8 +26,14 @@ import java.util.Optional;
 public class OrderService {
 
     private final OrdersRepository ordersRepository;
+    private final PurchaseMatarialRepository purchaseMatarialRepository;
+    private final MaterialDetailsRepository materialDetailsRepository;
+    private final TimeService timeService;
+    private final PlanService planService;
 
     public void save(Order_Dto Orderdata) {
+
+        LocalDateTime date = timeService.getDateTimeFromDB().getTime();
 
         Orders orders = new Orders();
         orders.setProduct_name(Orderdata.getProduct_name());
@@ -68,11 +81,13 @@ public class OrderService {
     public void update(Shipment_management_dto shippingProduct) {
         Optional<Orders> optionalOrder = ordersRepository.findById(shippingProduct.getOrder_id());
 
+        LocalDateTime date = timeService.getDateTimeFromDB().getTime();
+
         if (optionalOrder.isPresent()) {
             Orders order = optionalOrder.get();
 
             // 수정할 필드만 설정
-            order.setShipping_date(new Date());
+            order.setShipping_date(date);
 
             // 저장
             ordersRepository.save(order);
@@ -96,6 +111,51 @@ public class OrderService {
         } else {
             throw new RuntimeException("Order not found with id");
         }
+
     }
+
+    public List<Orders> findByDeletable(Boolean deletable){
+        return ordersRepository.findByDeletable(deletable);
+    }
+
+    public List<Purchase_matarial> findByDelivery_status(String deliveryStatus){
+
+        return purchaseMatarialRepository.findByDeliveryStatusJPQL(deliveryStatus);
+    }
+
+
+
+    public void savePurchaseMaterial(savePurchaseMaterial_Dto saveRequest) {
+        Orders orders = ordersRepository.findById(saveRequest.getOrder_id())
+                .orElseThrow(EntityNotFoundException::new);
+        orders.setDeletable(false);
+        purchaseMatarialRepository.save(saveRequest.toEntity(orders));
+    }
+
+
+
+    public void findByPurchase_material_id(Integer Purchase_material_id){
+
+        //발주번호로 데이터를 조회하고, '배송중'->'배송 완료'로 변경하여 저장
+        String deliveryOk = "배송완료";
+        Purchase_matarial purchaseMatarial = purchaseMatarialRepository.findByPurchaseMaterialId(Purchase_material_id);
+        purchaseMatarial.setDelivery_status(deliveryOk);
+        purchaseMatarialRepository.save(purchaseMatarial);
+
+        //발주번호로 데이터를 조회한 값의 '주문량'을 가져와 '입고량'으로 등록한다.
+        //발주번호로 조회한 원자재발주tbl을 연관관계 매핑된 필드에 등록한다.
+        //시각을 할당한다.
+        //db에 저장한다.
+        LocalDateTime date = timeService.getDateTimeFromDB().getTime();
+
+        Material_details materialDetails = new Material_details();
+        materialDetails.setReceived_quantity(purchaseMatarial.getOrder_quantity());
+        materialDetails.setPurchase_matarial(purchaseMatarial);
+        materialDetails.setReceived_date(date);
+        materialDetailsRepository.save(materialDetails);
+
+    }
+
+
 
 }

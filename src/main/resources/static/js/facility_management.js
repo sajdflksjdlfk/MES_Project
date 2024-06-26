@@ -29,6 +29,7 @@ $(document).ready(function() {
                     }
                 },
                 { data: 'equipment_plan_id' },
+                { data: 'plan_id' },
                 { data: 'product_name' },
                 { data: 'input' },
                 { data: 'output' },
@@ -123,7 +124,7 @@ $(document).ready(function() {
 
             // 여기서 선택된 데이터에 대한 추가적인 동작을 수행할 수 있습니다.
             // 예: 선택된 데이터를 서버로 전송하여 처리하는 등의 작업
-            
+
 
         } else {
             alert('하나의 행을 선택해야 합니다.');
@@ -148,8 +149,7 @@ $(document).ready(function() {
 
             if (selectedValue == '12') {
                 var finishData = {
-                    order_id: rowData.equipment_plan_id,
-                    product_name: rowData.product_name,
+                    order_id: rowData.plan_id,
                     received_quantity: rowData.quantity
                 };
 

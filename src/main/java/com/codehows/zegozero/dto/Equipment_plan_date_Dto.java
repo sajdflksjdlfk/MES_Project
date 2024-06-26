@@ -20,6 +20,7 @@ public class Equipment_plan_date_Dto {
     private String product_name;
     private LocalDateTime start_date;
     private LocalDateTime end_date;
+    private int plan_id;
 
 
 
@@ -32,6 +33,7 @@ public class Equipment_plan_date_Dto {
         this.product_name = plan_equipment.getPlan().getProduct_name();
         this.start_date = plan_equipment.getStart_date();
         this.end_date = plan_equipment.getEnd_date();
+        this.plan_id = plan_equipment.getPlan().getPlan_id();
     }
 
 }

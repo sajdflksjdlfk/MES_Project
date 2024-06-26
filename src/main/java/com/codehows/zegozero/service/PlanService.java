@@ -1,5 +1,6 @@
 package com.codehows.zegozero.service;
 
+import com.codehows.zegozero.entity.Orders;
 import com.codehows.zegozero.entity.Plans;
 import com.codehows.zegozero.repository.PlansRepository;
 import lombok.RequiredArgsConstructor;
@@ -100,5 +101,8 @@ public class PlanService {
     // 임시 계획 리스트를 초기화하는 메서드 추가
     public void clearTemporaryPlans() {
         temporaryPlans.clear();
+    public Plans findById(Integer id) {
+        return plansRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Board not found"));
     }
 }
