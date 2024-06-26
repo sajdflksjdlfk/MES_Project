@@ -3,6 +3,7 @@ package com.codehows.zegozero.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Table(name = "material_details")
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class Material_details {
 
     @Id

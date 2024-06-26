@@ -190,19 +190,23 @@ public class OrderApiController {
         return ResponseEntity.ok().body("All materials saved successfully");
     }
 
+
+
+    //1.발주번호를 바탕으로 '배송중'을 '배송완료'로 변경한다.
+    //2.원자재 내역 테이블에 발주번호를 등록한다.
+    //3. 원자재 입고량을 구하는 방법- '주문량'(원자재발주tbl)을 가져와 '입고량'(원자재내역tbl)으로 등록한다.
+    //4.dto에 현재 날짜를 등록하여 함께 저장한다.
     @PostMapping("deliveryOk")
     public ResponseEntity<?> deliveryOk(@RequestBody Integer[] deliveryOk){
+        //deliveryOk는 발주번호를 가진 배열
 
-//        System.out.println(deliveryOk[0]);
-//        System.out.println(deliveryOk[1]);
-//        System.out.println(deliveryOk[2]);
 
         // 배열 길이를 체크하고 각 값을 출력
         if (deliveryOk != null && deliveryOk.length > 0) {
 
             for (int i = 0; i < deliveryOk.length; i++) {
-                System.out.println("Element " + i + ": " + deliveryOk[i]);
-                orderService.findByPurchase_material_id(deliveryOk[i]);
+
+                orderService.findByPurchase_material_id(deliveryOk[i]); //
             }
         } else {
             return ResponseEntity.badRequest().body("No materials provided");

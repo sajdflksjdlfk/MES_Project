@@ -88,7 +88,9 @@ $(document).ready(function() {
 
     $('#deliveryOk').click(function () {
 
-        const deliveryOkOrder = [];
+        const deliveryOkOrder = []; //발주 번호를 배열형태로 저장
+
+        //선택한 행의 정보를 배열형태로 저장
         const deliveryOk = aa.rows('.selected').data().toArray();
 
         console.log(deliveryOk);
@@ -100,6 +102,11 @@ $(document).ready(function() {
         });
 
         console.log(deliveryOkOrder);
+
+        //1.발주번호를 바탕으로 '배송중'을 '배송완료'로 변경한다.
+        //2.원자재 내역 테이블에 발주번호를 등록한다.
+        //3. 원자재 입고량을 구하는 방법- '주문량'(원자재발주tbl)을 가져와 '입고량'(원자재내역tbl)으로 등록한다.
+        //4.dto에 현재 날짜를 등록하여 함께 저장한다.
 
         fetch('/api/deliveryOk', {
             method: 'POST',
@@ -115,6 +122,8 @@ $(document).ready(function() {
             .catch((error) => {
                 console.error('Error:', "error");
             });
+
+
         location.reload();
         //
 
